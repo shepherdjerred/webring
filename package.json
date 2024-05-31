@@ -1,0 +1,47 @@
+{
+  "name": "webring",
+  "type": "module",
+  "version": "0.0.2",
+  "scripts": {
+    "lint": "eslint .",
+    "build": "tsc",
+    "test": ""
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "dependencies": {
+    "remeda": "^2.0.0",
+    "rss-parser": "^3.13.0",
+    "sanitize-html": "^2.13.0",
+    "truncate-html": "^1.1.1",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.3.0",
+    "@tsconfig/node20": "^20.1.4",
+    "@tsconfig/strictest": "^2.0.5",
+    "@types/eslint__js": "^8.42.3",
+    "@types/node": "^20.12.13",
+    "@types/sanitize-html": "^2.11.0",
+    "@typescript-eslint/eslint-plugin": "^7.11.0",
+    "@typescript-eslint/parser": "^7.11.0",
+    "eslint": "^8.57.0",
+    "husky": "^9.0.11",
+    "lint-staged": "^15.2.5",
+    "prettier": "^3.2.5",
+    "typescript": "^5.4.5",
+    "typescript-eslint": "^7.11.0"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": "eslint --cache --fix",
+    "*": "prettier --ignore-unknown --write"
+  },
+  "files": [
+    "dist",
+    "package.json",
+    "README.md",
+    "LICENSE",
+    "package-lock.json",
+    "CHANGELOG.md"
+  ]
+}
