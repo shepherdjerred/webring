@@ -13,5 +13,6 @@ export default tseslint.config(
       },
     },
     ignores: ["*.js"],
+    files: ["tsconfig.json"],
   },
 );
