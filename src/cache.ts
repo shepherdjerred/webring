@@ -1,5 +1,6 @@
 import * as R from "remeda";
 import type { Configuration, Cache, Result, ResultEntry, CacheEntry, Source } from "./types.js";
+import { fetch } from "./fetch.js";
 
 export async function runWithCache(config: Configuration, cache: Cache): Promise<[Result, Cache]> {
   const promises = R.pipe(

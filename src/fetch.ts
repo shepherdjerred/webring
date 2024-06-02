@@ -29,7 +29,7 @@ export async function fetch(source: Source, length: number): Promise<ResultEntry
       url: firstItem.link,
       date: new Date(firstItem.date),
       source,
-      preview: preview ? truncate(sanitizeHtml(preview), length) : undefined,
+      preview: preview ? truncate.default(sanitizeHtml(preview), length) : undefined,
     };
   } catch (e) {
     console.error(`Error fetching ${source.url}: ${e as string}`);
