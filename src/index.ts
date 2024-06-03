@@ -3,14 +3,12 @@ import { type Configuration, type Result, type Cache, CacheSchema } from "./type
 import fs from "fs/promises";
 
 export async function run(config: Configuration): Promise<Result> {
-  const cacheFilename = "cache.json";
-  const currentDir = process.cwd();
-  const fullFilename = `${currentDir}/${cacheFilename}`;
+  const cacheFilename = config.cache_file;
 
   let cacheObject: Cache = {};
 
   try {
-    const cacheFile = await fs.readFile(fullFilename);
+    const cacheFile = await fs.readFile(cacheFilename);
     cacheObject = CacheSchema.parse(JSON.parse(cacheFile.toString()));
   } catch (e) {
     console.error("Error reading cache file:", e);
@@ -20,7 +18,11 @@ export async function run(config: Configuration): Promise<Result> {
   const [result, updatedCache] = await runWithCache(config, cacheObject);
 
   // write the updated cache to cache.json
-  await fs.writeFile(fullFilename, JSON.stringify(updatedCache));
+  await fs.writeFile(cacheFilename, JSON.stringify(updatedCache));
 
   return result;
 }
+
+export * from "./types.js";
+export * from "./cache.js";
+export * from "./fetch.js";

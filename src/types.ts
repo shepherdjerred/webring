@@ -2,16 +2,23 @@ import { z } from "zod";
 
 export type Source = z.infer<typeof SourceSchema>;
 const SourceSchema = z.object({
+  // the url of the feed
   url: z.string(),
+  // a title for the feed
   title: z.string(),
 });
 
 export type Configuration = z.infer<typeof ConfigurationSchema>;
 const ConfigurationSchema = z.object({
+  // list of sources to fetch
   sources: SourceSchema.array(),
-  number: z.number(),
-  cache_duration_minutes: z.number(),
-  truncate: z.number(),
+  // how many entries to return
+  number: z.number().default(3),
+  // how long to cache a results for
+  cache_duration_minutes: z.number().default(60),
+  // how many words to truncate the preview to
+  truncate: z.number().default(300),
+  cache_file: z.string().default("cache.json"),
 });
 
 export type ResultEntry = z.infer<typeof ResultEntrySchema>;

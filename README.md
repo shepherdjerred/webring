@@ -11,7 +11,7 @@ Inspired by:
 
 ## Installation
 
-```
+```bash
 npm i webring
 ```
 
@@ -19,14 +19,35 @@ npm i webring
 
 This library is meant to be used with static site generators. It is framework agnostic.
 
-### Astro
-
-### Command Line
-
-You can use this library to generate static HTML which can be included into your site using it's include mechanisms
-
-## Configuration
-
 ```typescript
+import { type Configuration, run } from "webring";
 
+// create a configuration object
+const config: Configuration = {
+  sources: [
+    {
+      url: "https://drewdevault.com/blog/index.xml",
+      title: "Drew DeVault",
+    },
+    {
+      url: "https://danluu.com/atom.xml",
+      title: "Dan Luu",
+    },
+    {
+      url: "https://jakelazaroff.com/rss.xml",
+      title: "Jake Lazaroff",
+    },
+  ],
+  number: 3,
+  cache_duration_minutes: 60,
+  truncate: 300,
+};
+
+// run the application
+const result = await run(config);
+
+// do something with the results
+result.map((entry) => {
+  console.log(entry);
+});
 ```
