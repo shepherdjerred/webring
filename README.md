@@ -51,3 +51,5 @@ result.map((entry) => {
   console.log(entry);
 });
 ```
+
+I use this with Astro on my [personal website](https://github.com/shepherdjerred/sjer.red/blob/main/src/components/BlogWebring.astro#L17-L22).
