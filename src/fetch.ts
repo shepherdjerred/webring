@@ -4,6 +4,9 @@ import truncate from "truncate-html";
 import { type Source, type ResultEntry, FeedEntrySchema } from "./types.js";
 import * as R from "remeda";
 
+// for some reason, TypeScript does not infer the type of the default export correctly
+const truncateFn: typeof truncate.default = truncate as unknown as typeof truncate.default;
+
 export async function fetch(source: Source, length: number): Promise<ResultEntry | undefined> {
   const parser = new Parser();
   try {
@@ -29,7 +32,7 @@ export async function fetch(source: Source, length: number): Promise<ResultEntry
       url: firstItem.link,
       date: new Date(firstItem.date),
       source,
-      preview: preview ? truncate.default(sanitizeHtml(preview), length) : undefined,
+      preview: preview ? truncateFn(sanitizeHtml(preview), length) : undefined,
     };
   } catch (e) {
     console.error(`Error fetching ${source.url}: ${e as string}`);

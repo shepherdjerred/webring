@@ -1,0 +1,16 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`it should work 1`] = `
+[
+  {
+    "date": 2024-05-24T00:00:00.000Z,
+    "preview": "TIL: Closures in Groovy",
+    "source": {
+      "title": "Jerred Shepherd",
+      "url": "https://sjer.red/rss.xml",
+    },
+    "title": "TIL: Closures in Groovy",
+    "url": "https://sjer.red/blog/til/2024-05-24/",
+  },
+]
+`;

@@ -7,6 +7,13 @@ export async function run(config: Configuration): Promise<Result> {
 
   let cacheObject: Cache = {};
 
+  // check if cache.json exists
+  try {
+    await fs.access(cacheFilename);
+  } catch (e) {
+    await fs.writeFile(cacheFilename, JSON.stringify({}));
+  }
+
   try {
     const cacheFile = await fs.readFile(cacheFilename);
     cacheObject = CacheSchema.parse(JSON.parse(cacheFile.toString()));
