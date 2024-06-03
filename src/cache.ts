@@ -6,7 +6,6 @@ export async function runWithCache(config: Configuration, cache: Cache): Promise
   const promises = R.pipe(
     config.sources,
     R.map((source) => fetchWithCache(source, cache, config)),
-    R.filter((result) => result !== undefined),
   );
   const results = await Promise.all(promises);
 

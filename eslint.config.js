@@ -12,7 +12,5 @@ export default tseslint.config(
         tsconfigRootDir: import.meta.dirname,
       },
     },
-    ignores: ["*.js"],
-    files: ["tsconfig.json"],
   },
 );
