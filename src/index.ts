@@ -1,35 +1,26 @@
-import { runWithCache } from "./cache.js";
-import { type Configuration, type Result, type Cache, CacheSchema } from "./types.js";
-import fs from "fs/promises";
+import * as R from "remeda";
+import { fetchAllCached as fetchAllCached } from "./cache.js";
+import { fetchAll as fetchAllUncached } from "./fetch.js";
+import { type Configuration, type Result, CachedConfigurationSchema } from "./types.js";
 
 export async function run(config: Configuration): Promise<Result> {
-  const cacheFilename = config.cache_file;
+  const { success, data } = CachedConfigurationSchema.safeParse(config);
 
-  let cacheObject: Cache = {};
-
-  // check if cache.json exists
-  try {
-    await fs.access(cacheFilename);
-  } catch (e) {
-    await fs.writeFile(cacheFilename, JSON.stringify({}));
+  let result: Result;
+  if (success) {
+    result = await fetchAllCached(data);
+  } else {
+    result = await fetchAllUncached(config);
   }
 
-  try {
-    const cacheFile = await fs.readFile(cacheFilename);
-    cacheObject = CacheSchema.parse(JSON.parse(cacheFile.toString()));
-  } catch (e) {
-    console.error("Error reading cache file:", e);
-    throw e;
-  }
+  const topResults = R.pipe(
+    result,
+    R.sortBy((result) => result.date.getTime()),
+    R.reverse(),
+    R.take(config.number),
+  );
 
-  const [result, updatedCache] = await runWithCache(config, cacheObject);
-
-  // write the updated cache to cache.json
-  await fs.writeFile(cacheFilename, JSON.stringify(updatedCache));
-
-  return result;
+  return topResults;
 }
 
 export * from "./types.js";
-export * from "./cache.js";
-export * from "./fetch.js";

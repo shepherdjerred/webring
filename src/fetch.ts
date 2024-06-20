@@ -1,11 +1,16 @@
 import Parser from "rss-parser";
 import sanitizeHtml from "sanitize-html";
 import truncate from "truncate-html";
-import { type Source, type ResultEntry, FeedEntrySchema } from "./types.js";
+import { type Source, type ResultEntry, FeedEntrySchema, type Configuration } from "./types.js";
 import * as R from "remeda";
+import { asyncMapFilterUndefined } from "./util.js";
 
 // for some reason, TypeScript does not infer the type of the default export correctly
 const truncateFn: typeof truncate.default = truncate as unknown as typeof truncate.default;
+
+export async function fetchAll(config: Configuration) {
+  return await asyncMapFilterUndefined(config.sources, (source) => fetch(source, config.truncate));
+}
 
 export async function fetch(source: Source, length: number): Promise<ResultEntry | undefined> {
   const parser = new Parser();

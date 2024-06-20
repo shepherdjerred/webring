@@ -1,9 +1,8 @@
-// sum.test.js
 import { expect, test } from "vitest";
 import type { Configuration } from "./types.js";
-import { run } from "./index.js";
+import { fetchAll } from "./fetch.js";
 
-test("it should work", async () => {
+test("it should fetch an RSS feed without caching", async () => {
   const config: Configuration = {
     sources: [
       {
@@ -12,11 +11,9 @@ test("it should work", async () => {
       },
     ],
     number: 1,
-    cache_duration_minutes: 0,
     truncate: 300,
-    cache_file: "cache.json",
   };
 
-  const result = await run(config);
+  const result = await fetchAll(config);
   expect(result).toMatchSnapshot();
 });

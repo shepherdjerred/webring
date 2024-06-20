@@ -1,48 +1,78 @@
 import * as R from "remeda";
-import type { Configuration, Cache, Result, ResultEntry, CacheEntry, Source } from "./types.js";
+import {
+  type Cache,
+  type Result,
+  type ResultEntry,
+  type CacheEntry,
+  type Source,
+  type CachedConfiguration,
+  CacheSchema,
+  type CacheConfiguration,
+} from "./types.js";
 import { fetch } from "./fetch.js";
+import fs from "fs/promises";
+import { asyncMapFilterUndefined } from "./util.js";
 
-export async function runWithCache(config: Configuration, cache: Cache): Promise<[Result, Cache]> {
-  const promises = R.pipe(
-    config.sources,
-    R.map((source) => fetchWithCache(source, cache, config)),
-  );
-  const results = await Promise.all(promises);
+async function loadCache({ cache_file }: CacheConfiguration): Promise<Cache> {
+  try {
+    await fs.access(cache_file);
+    const cacheFile = await fs.readFile(cache_file);
+    return CacheSchema.parse(JSON.parse(cacheFile.toString()));
+  } catch (e) {
+    return {};
+  }
+}
 
-  const definedResults = results.filter((result) => result !== undefined) as ResultEntry[];
+async function saveCache({ cache_file }: CacheConfiguration, cache: Cache) {
+  await fs.writeFile(cache_file, JSON.stringify(cache));
+}
 
-  const updatedCache: Cache = R.pipe(
-    definedResults,
-    R.map((result): [string, CacheEntry] => [result.source.url, { timestamp: new Date(), data: result }]),
+function toCacheEntry(result: ResultEntry, now: Date): [string, CacheEntry] {
+  return [result.source.url, { timestamp: now, data: result }];
+}
+
+function toCache(results: ResultEntry[], now: Date): Cache {
+  return R.pipe(
+    results,
+    R.map((result) => toCacheEntry(result, now)),
     R.fromEntries(),
   );
+}
 
-  const topResults = R.pipe(
-    definedResults,
-    R.sortBy((result) => result.date.getTime()),
-    R.reverse(),
-    R.take(config.number),
-  );
+function updateCache(results: ResultEntry[], config: CachedConfiguration): Promise<void> {
+  const now = new Date();
+  const updatedCache = toCache(results, now);
+  return saveCache(config.cache, updatedCache);
+}
 
-  return [topResults, updatedCache];
+export async function fetchAllCached(config: CachedConfiguration): Promise<Result> {
+  const cache = await loadCache(config.cache);
+
+  const results = await asyncMapFilterUndefined(config.sources, (source) => fetchWithCache(source, cache, config));
+
+  await updateCache(results, config);
+
+  return results;
 }
 
 export async function fetchWithCache(
   source: Source,
   cache: Cache,
-  config: Configuration,
+  config: CachedConfiguration,
 ): Promise<ResultEntry | undefined> {
   const cacheEntry = cache[source.url];
   if (cacheEntry) {
     const now = new Date();
-    if (now.getTime() - cacheEntry.timestamp.getTime() < config.cache_duration_minutes * 60 * 1000) {
-      console.log(`Cache entry found for ${source.url}`);
+    if (now.getTime() - cacheEntry.timestamp.getTime() < config.cache.cache_duration_minutes * 60 * 1000) {
+      console.log(`Cache entry found for ${source.url}.`);
       return Promise.resolve(cacheEntry.data);
     } else {
-      console.log(`Cache entry for ${source.url} is too old`);
+      console.log(`Cache entry for ${source.url} is too old.`);
     }
+  } else {
+    console.log(`No cache entry for ${source.url}.`);
   }
 
-  console.log(`No cache entry for ${source.url}`);
+  console.log(`Fetching ${source.url}`);
   return fetch(source, config.truncate);
 }
