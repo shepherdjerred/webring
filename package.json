@@ -6,7 +6,7 @@
     "prepare": "husky",
     "lint": "eslint src",
     "build": "tsc",
-    "test": "vitest"
+    "test": "vitest --disable-console-intercept"
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

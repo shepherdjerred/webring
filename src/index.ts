@@ -8,8 +8,10 @@ export async function run(config: Configuration): Promise<Result> {
 
   let result: Result;
   if (success) {
+    console.log(`Using cache at ${data.cache.cache_file}.`);
     result = await fetchAllCached(data);
   } else {
+    console.log("Cache disabled.");
     result = await fetchAllUncached(config);
   }
 

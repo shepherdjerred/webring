@@ -1,7 +1,5 @@
 import { z } from "zod";
 
-export type Runner = (config: Configuration) => Promise<Result>;
-
 export type Source = z.infer<typeof SourceSchema>;
 const SourceSchema = z.object({
   // the url of the feed
