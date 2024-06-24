@@ -24,6 +24,7 @@ async function loadCache({ cache_file }: CacheConfiguration): Promise<Cache> {
 }
 
 async function saveCache({ cache_file }: CacheConfiguration, cache: Cache) {
+  await fs.mkdir(cache_file.split("/").slice(0, -1).join("/"), { recursive: true });
   await fs.writeFile(cache_file, JSON.stringify(cache));
 }
 
