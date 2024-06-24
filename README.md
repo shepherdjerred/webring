@@ -67,7 +67,6 @@ export const result: Result = await run(config);
 result.map((entry) => {
   // do something with the results
   // for example, you might render each item as an HTML block
-  //
 });
 ```
 
