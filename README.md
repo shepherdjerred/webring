@@ -1,5 +1,5 @@
-<div style="display: flex; flex-direction: column; margin-bottom: 20px">
-  <img src="https://raw.githubusercontent.com/shepherdjerred/webring/main/assets/logo.png" width=75% height=75% alt="webring logo" style="align-self: center">
+<div style="text-align:center">
+  <img src="https://raw.githubusercontent.com/shepherdjerred/webring/main/assets/logo.png" width=75% height=75% alt="webring logo">
 </div>
 
 [![webring](https://img.shields.io/npm/v/webring.svg)](https://www.npmjs.com/package/webring)
