@@ -13,14 +13,20 @@
 npm i webring
 ```
 
+## Features
+
+- Written in TypeScript
+- Caching
+- HTML sanitization and truncation
+
 ## Quick Start
 
 This library is intended to be used with a static site generator. I use this with [Astro](https://astro.build/) on my [personal website](https://github.com/shepherdjerred/sjer.red/blob/1220ebef2e43956ba385402ed8529870e9084de8/src/components/BlogWebring.astro#L17-L22).
 
 ```typescript
-import { type Configuration, type Result, run } from "webring";
+import { run } from "webring";
 
-export const config: Configuration = {
+const result = await run({
   sources: [
     {
       url: "https://drewdevault.com/blog/index.xml",
@@ -35,9 +41,8 @@ export const config: Configuration = {
       title: "Jake Lazaroff",
     },
   ],
-};
+});
 
-export const result = await run(config);
 console.log(result);
 // [
 //   {
