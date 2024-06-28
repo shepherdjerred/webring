@@ -2,7 +2,7 @@
 
 [![webring](https://img.shields.io/npm/v/webring.svg)](https://www.npmjs.com/package/webring)
 
-`webring` gathers the latest posts from your favorite RSS feeds so that you can embed them on your site.
+`webring` fetches the latest updates from your favorite RSS feeds. For example, you might use this on your blog to show posts from the blogs that you read.
 
 Inspired by:
 
@@ -17,7 +17,7 @@ npm i webring
 
 ## Quick Start
 
-This library is meant to be used with static site generators. It is framework agnostic. I use this with [Astro](https://astro.build/) on my [personal website](https://github.com/shepherdjerred/sjer.red/blob/main/src/components/BlogWebring.astro#L17-L22).
+This library is intended to be used with a static site generator. I use this with [Astro](https://astro.build/) on my [personal website](https://github.com/shepherdjerred/sjer.red/blob/1220ebef2e43956ba385402ed8529870e9084de8/src/components/BlogWebring.astro#L17-L22).
 
 ```typescript
 import { run } from "webring";

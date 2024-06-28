@@ -6,6 +6,7 @@
     "prepare": "husky",
     "lint": "eslint src",
     "build": "tsc",
+    "watch": "tsc -w",
     "test": "vitest --disable-console-intercept"
   },
   "main": "dist/index.js",
