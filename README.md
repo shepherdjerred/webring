@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://cdn.rawgit.com/shepherdjerred/webring/main/assets/logo.png" height=200 alt="webring logo">
+  <img src="https://cdn.rawgit.com/shepherdjerred/webring/main/assets/logo.png" height=150 alt="webring logo">
 
 [![webring](https://img.shields.io/npm/v/webring.svg)](https://www.npmjs.com/package/webring)
 
