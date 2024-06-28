@@ -1,58 +1,76 @@
 import { z } from "zod";
 
 export type Source = z.infer<typeof SourceSchema>;
+/** An RSS source */
 const SourceSchema = z.object({
-  // the url of the feed
+  /** The URL of an RSS feed */
   url: z.string(),
-  // a title for the feed
-  title: z.string(),
+  /** A title to describe the feed */
+  title: z.string().describe("A title for the feed"),
 });
 
 export type CacheConfiguration = z.infer<typeof CacheConfigurationSchema>;
+/** Configuration for the cache */
 const CacheConfigurationSchema = z.object({
-  // how long to cache a results for
+  /** How long to cache a result for */
   cache_duration_minutes: z.number().default(60),
+  /** The location of a file to use as a cache */
   cache_file: z.string().default("cache.json"),
 });
 
 export type Configuration = z.infer<typeof ConfigurationSchema>;
+/** A configuration object with caching possibly configured */
 const ConfigurationSchema = z.object({
-  // list of sources to fetch
+  /** A list of sources to fetch */
   sources: SourceSchema.array(),
-  // how many entries to return
+  /** Return the n latest updates from the source list. */
   number: z.number().default(3),
-  // how many words to truncate the preview to
+  /** How many words the preview field should be truncated to in characters after HTML has been sanitized and parsed. */
   truncate: z.number().default(300),
+  /** Configuration for the cache */
   cache: CacheConfigurationSchema.optional(),
 });
 
-// CachedConfiguration is the same as Configuration but cache is not optional
 export type CachedConfiguration = z.infer<typeof CachedConfigurationSchema>;
+/** A configuration object with caching definitely configured */
 export const CachedConfigurationSchema = ConfigurationSchema.extend({
+  /** Configuration for the cache */
   cache: CacheConfigurationSchema,
 });
 
 export type ResultEntry = z.infer<typeof ResultEntrySchema>;
+/** A single entry from an RSS feed */
 const ResultEntrySchema = z.object({
+  /** The title of the entry */
   title: z.string(),
+  /** A direct link to the entry */
   url: z.string(),
+  /** The date of the entry */
   date: z.coerce.date(),
+  /** The source the entry is from */
   source: SourceSchema,
+  /** A preview of the entry. This may contain sanitized HTML. */
   preview: z.string().optional(),
 });
 
 export type Result = z.infer<typeof ResultSchema>;
+/** A list of results */
 const ResultSchema = z.array(ResultEntrySchema);
 
 export type CacheEntry = z.infer<typeof CacheEntrySchema>;
+/** A single cache entry */
 export const CacheEntrySchema = z.object({
+  /** The time a source was last checked */
   timestamp: z.coerce.date(),
+  /** The data from the source */
   data: ResultEntrySchema,
 });
 
 export type Cache = z.infer<typeof CacheSchema>;
+/** A mapping of source URLs to cache entries */
 export const CacheSchema = z.record(CacheEntrySchema);
 
+/** The expected format fetched RSS feed entries */
 export const FeedEntrySchema = z
   .object({
     title: z.string(),

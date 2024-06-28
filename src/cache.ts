@@ -10,8 +10,8 @@ import {
   type CacheConfiguration,
 } from "./types.js";
 import { fetch } from "./fetch.js";
-import fs from "fs/promises";
 import { asyncMapFilterUndefined } from "./util.js";
+import fs from "fs/promises";
 
 async function loadCache({ cache_file }: CacheConfiguration): Promise<Cache> {
   try {
