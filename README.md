@@ -5,6 +5,8 @@
 
 `webring` fetches the latest updates from your favorite RSS feeds.
 
+This project is actively maintained. If you have a feature request or need help, please [create an issue](https://github.com/shepherdjerred/webring/issues/new).
+
 </div>
 
 ## Installation
