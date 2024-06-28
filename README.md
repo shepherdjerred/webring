@@ -20,8 +20,6 @@ This library is intended to be used with a static site generator. I use this wit
 ```typescript
 import { type Configuration, type Result, run } from "webring";
 
-// All possible configuration values can be seen in `types.ts`
-// https://github.com/shepherdjerred/webring/blob/main/src/types.ts
 export const config: Configuration = {
   sources: [
     {
@@ -37,12 +35,6 @@ export const config: Configuration = {
       title: "Jake Lazaroff",
     },
   ],
-  number: 3,
-  truncate: 300,
-  cache: {
-    cache_file: "webring.json",
-    cache_duration_minutes: 60,
-  },
 };
 
 export const result = await run(config);
@@ -74,6 +66,12 @@ console.log(result);
 //   }
 // ]
 ```
+
+## Configuration
+
+`webring` is configured by passing in a `Configuration` object into the `run` method.
+
+All possible configuration values can be seen by looking at the [`typedoc` site]().
 
 ## Example
 

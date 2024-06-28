@@ -7,7 +7,8 @@
     "lint": "eslint src",
     "build": "tsc",
     "watch": "tsc -w",
-    "test": "vitest --disable-console-intercept"
+    "test": "vitest --disable-console-intercept",
+    "typedoc": "typedoc src/index.ts"
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -32,6 +33,8 @@
     "husky": "^9.0.11",
     "lint-staged": "^15.2.5",
     "prettier": "^3.3.0",
+    "typedoc": "^0.26.3",
+    "typedoc-plugin-zod": "^1.2.0",
     "typescript": "^5.4.5",
     "typescript-eslint": "^7.11.0",
     "vitest": "^1.6.0"
