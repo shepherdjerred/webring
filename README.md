@@ -71,7 +71,7 @@ console.log(result);
 
 `webring` is configured by passing in a `Configuration` object into the `run` method.
 
-All possible configuration values can be seen by looking at the [`typedoc` site]().
+All possible configuration values can be seen by looking at the [`typedoc` site](https://shepherdjerred.github.io/webring/types/Configuration.html).
 
 ## Example
 
