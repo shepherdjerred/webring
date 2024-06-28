@@ -3,9 +3,9 @@
 
 [![webring](https://img.shields.io/npm/v/webring.svg)](https://www.npmjs.com/package/webring)
 
-</div>
-
 `webring` fetches the latest updates from your favorite RSS feeds.
+
+</div>
 
 ## Installation
 
