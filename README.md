@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://raw.githubusercontent.com/shepherdjerred/webring/main/assets/logo.svg" alt="webring logo">
+  <img src="https://cdn.rawgit.com/shepherdjerred/webring/main/assets/logo.png" alt="webring logo">
 
 [![webring](https://img.shields.io/npm/v/webring.svg)](https://www.npmjs.com/package/webring)
 
