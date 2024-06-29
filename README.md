@@ -1,5 +1,9 @@
 <div align="center">
-  <img src="https://cdn.rawgit.com/shepherdjerred/webring/main/assets/logo.png" height=150 alt="webring logo">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://cdn.rawgit.com/shepherdjerred/webring/main/assets/logo-dark.png">
+    <source media="(prefers-color-scheme: light)" srcset="https://cdn.rawgit.com/shepherdjerred/webring/main/assets/logo-light.png">
+    <img alt="webring logo" src="https://cdn.rawgit.com/shepherdjerred/webring/main/assets/logo-light.png" height=150>
+  </picture>
 
 [![webring](https://img.shields.io/npm/v/webring.svg)](https://www.npmjs.com/package/webring)
 
