@@ -36,7 +36,7 @@
     "typedoc": "^0.26.3",
     "typedoc-plugin-zod": "^1.2.0",
     "typescript": "^5.4.5",
-    "typescript-eslint": "^7.11.0",
+    "typescript-eslint": "^7.14.1",
     "vitest": "^1.6.0"
   },
   "lint-staged": {
