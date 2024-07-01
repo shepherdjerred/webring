@@ -31,7 +31,7 @@
     "@typescript-eslint/parser": "^7.11.0",
     "eslint": "^8.57.0",
     "husky": "^9.0.11",
-    "lint-staged": "^15.2.5",
+    "lint-staged": "^15.2.7",
     "prettier": "^3.3.0",
     "typedoc": "^0.26.3",
     "typedoc-plugin-zod": "^1.2.0",
