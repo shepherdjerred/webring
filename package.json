@@ -32,7 +32,7 @@
     "eslint": "^8.57.0",
     "husky": "^9.0.11",
     "lint-staged": "^15.2.5",
-    "prettier": "^3.3.0",
+    "prettier": "^3.3.2",
     "typedoc": "^0.26.3",
     "typedoc-plugin-zod": "^1.2.0",
     "typescript": "^5.4.5",
