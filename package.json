@@ -13,7 +13,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "dependencies": {
-    "remeda": "^2.0.1",
+    "remeda": "^2.2.1",
     "rss-parser": "^3.13.0",
     "sanitize-html": "^2.13.0",
     "truncate-html": "^1.1.1",
