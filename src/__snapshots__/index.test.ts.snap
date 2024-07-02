@@ -3,14 +3,14 @@
 exports[`it should fetch an RSS feed with caching 1`] = `
 [
   {
-    "date": 2024-06-05T00:00:00.000Z,
-    "preview": "TIL: Asymmetric Cryptography in Go",
+    "date": 2024-07-01T00:00:00.000Z,
+    "preview": "TIL: Using Twoslash with Shiki and Astro",
     "source": {
       "title": "Jerred Shepherd",
       "url": "https://sjer.red/rss.xml",
     },
-    "title": "TIL: Asymmetric Cryptography in Go",
-    "url": "https://sjer.red/blog/til/2024-06-05/",
+    "title": "TIL: Using Twoslash with Shiki and  Astro",
+    "url": "https://sjer.red/blog/til/2024-07-01/",
   },
 ]
 `;
@@ -18,14 +18,14 @@ exports[`it should fetch an RSS feed with caching 1`] = `
 exports[`it should fetch an RSS feed without caching 1`] = `
 [
   {
-    "date": 2024-06-05T00:00:00.000Z,
-    "preview": "TIL: Asymmetric Cryptography in Go",
+    "date": 2024-07-01T00:00:00.000Z,
+    "preview": "TIL: Using Twoslash with Shiki and Astro",
     "source": {
       "title": "Jerred Shepherd",
       "url": "https://sjer.red/rss.xml",
     },
-    "title": "TIL: Asymmetric Cryptography in Go",
-    "url": "https://sjer.red/blog/til/2024-06-05/",
+    "title": "TIL: Using Twoslash with Shiki and  Astro",
+    "url": "https://sjer.red/blog/til/2024-07-01/",
   },
 ]
 `;
@@ -33,34 +33,44 @@ exports[`it should fetch an RSS feed without caching 1`] = `
 exports[`it should fetch several RSS feeds 1`] = `
 [
   {
-    "date": 2024-06-20T14:00:00.000Z,
-    "preview": "Looking for constructors that take a character count. The post How to convert between different types of counted-string string types appeared first on The Old New Thing.",
+    "date": 2024-07-01T14:00:00.000Z,
+    "preview": "Who forced you to register the same shell extension for both? The post If I register the same shell extension as both a context menu extension and a drag/drop extension, how do I know which one the system is using? appeared first on The Old New Thing.",
     "source": {
       "title": "The Old New Thing",
       "url": "https://devblogs.microsoft.com/oldnewthing/feed",
     },
-    "title": "How to convert between different types of counted-string string types",
-    "url": "https://devblogs.microsoft.com/oldnewthing/20240620-00/?p=109922",
+    "title": "If I register the same shell extension as both a context menu extension and a drag/drop extension, how do I know which one the system is using?",
+    "url": "https://devblogs.microsoft.com/oldnewthing/20240701-00/?p=109947",
   },
   {
-    "date": 2024-06-19T00:00:00.000Z,
-    "preview": "The recent innovations in the AI space, most notably those such as GPT-4, obviously have far-reaching implications for society, ranging from the utopian eliminating of drudgery, to the dystopian damage to the livelihood of artists in a capitalist society, to existential threats to humanity itself. I...",
-    "source": {
-      "title": "Ludicity",
-      "url": "https://ludic.mataroa.blog/rss/",
-    },
-    "title": "I Will Fucking Piledrive You If You Mention AI Again",
-    "url": "https://ludic.mataroa.blog/blog/i-will-fucking-piledrive-you-if-you-mention-ai-again/",
-  },
-  {
-    "date": 2024-06-19T00:00:00.000Z,
-    "preview": "I love this meetup so much",
+    "date": 2024-07-01T00:00:00.000Z,
+    "preview": " <p>In the hours following the release of <a href="https://www.qualys.com/2024/07/01/cve-2024-6387/regresshion.txt">CVE-2024-6387</a> for the project <a href="https://www.openssh.com/">OpenSSH</a>, site reliability workers and systems administrators scrambled to desperately rebuild and patch all their systems to fix a combination of memory unsafety and glibc's creative decisions in signal handler implementation logic...</p>",
     "source": {
       "title": "Xe Iaso",
       "url": "https://xeiaso.net/blog.rss",
     },
-    "title": "AI Tinkerers Ottawa v2.5.0 trip report",
-    "url": "https://xeiaso.net/notes/2024/ait-ottawa-2.5.0/",
+    "title": ""No way to prevent this" say users of only language where this regularly happens",
+    "url": "https://xeiaso.net/shitposts/no-way-to-prevent-this/CVE-2024-6387/",
+  },
+  {
+    "date": 2024-06-22T00:00:00.000Z,
+    "preview": "Synergy Greg would like to see you in His office, You will know Him when you see Him, Multitudinous is Synergy Greg! His handshake grinds the bones of the world, Beneficent is Synergy Greg! His lungs are mighty bellows, Go Team! Get! Shit! Done! He will wait by the sidelines, Any day now. His minion...",
+    "source": {
+      "title": "Ludicity",
+      "url": "https://ludic.mataroa.blog/rss/",
+    },
+    "title": "Synergy Greg",
+    "url": "https://ludic.mataroa.blog/blog/synergy-greg/",
+  },
+  {
+    "date": 2024-06-16T00:00:00.000Z,
+    "preview": "There've been regular viral stories about ML/AI bias with LLMs and generative AI for the past couple years. One thing I find interesting about discussions of bias is how different the reaction is in the LLM and generative AI case when compared to "classical" bugs in cases where there's a clear bug. ...",
+    "source": {
+      "title": "Dan Luu",
+      "url": "https://danluu.com/atom.xml",
+    },
+    "title": "A discussion of discussions on AI bias",
+    "url": "https://danluu.com/ai-bias/",
   },
   {
     "date": 2024-06-08T04:30:00.000Z,
@@ -81,16 +91,6 @@ exports[`it should fetch several RSS feeds 1`] = `
     },
     "title": "A Commitment to Art and Dogs",
     "url": "https://samwho.dev/dogs/",
-  },
-  {
-    "date": 2024-05-31T00:00:00.000Z,
-    "preview": "This is an archive of some posts in a forum thread titled "Beware of Bioware" in a now defunct forum, with comments from that forum as well as blog comments from a now defunct blog that archived that made the first attempt to archive this content. The original posts were deleted shortly after being ...",
-    "source": {
-      "title": "Dan Luu",
-      "url": "https://danluu.com/atom.xml",
-    },
-    "title": "Work-life balance at Bioware",
-    "url": "https://danluu.com/bioware/",
   },
   {
     "date": 2024-05-24T00:00:00.000Z,
