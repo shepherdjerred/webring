@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.1](https://github.com/shepherdjerred/webring/compare/v1.1.0...v1.1.1) (2024-07-02)
+
+
+### Bug Fixes
+
+* **deps:** update dependency remeda to v2.2.2 ([97a6c06](https://github.com/shepherdjerred/webring/commit/97a6c064138e0c204e231efb2ca45defd82b61f9))
+* update snapshot ([c73cdf7](https://github.com/shepherdjerred/webring/commit/c73cdf779433e6e7e8c5f2beee3fb2aefec9a0e0))
+* use import instead of triple-slash ([971a77e](https://github.com/shepherdjerred/webring/commit/971a77ecd0c612850faeb9d16f7775d3e7ca7253))
+
 ## [1.1.0](https://github.com/shepherdjerred/webring/compare/v1.0.3...v1.1.0) (2024-06-28)
 
 
