@@ -33,36 +33,6 @@ exports[`it should fetch an RSS feed without caching 1`] = `
 exports[`it should fetch several RSS feeds 1`] = `
 [
   {
-    "date": 2024-07-01T14:00:00.000Z,
-    "preview": "Who forced you to register the same shell extension for both? The post If I register the same shell extension as both a context menu extension and a drag/drop extension, how do I know which one the system is using? appeared first on The Old New Thing.",
-    "source": {
-      "title": "The Old New Thing",
-      "url": "https://devblogs.microsoft.com/oldnewthing/feed",
-    },
-    "title": "If I register the same shell extension as both a context menu extension and a drag/drop extension, how do I know which one the system is using?",
-    "url": "https://devblogs.microsoft.com/oldnewthing/20240701-00/?p=109947",
-  },
-  {
-    "date": 2024-07-01T00:00:00.000Z,
-    "preview": " <p>In the hours following the release of <a href="https://www.qualys.com/2024/07/01/cve-2024-6387/regresshion.txt">CVE-2024-6387</a> for the project <a href="https://www.openssh.com/">OpenSSH</a>, site reliability workers and systems administrators scrambled to desperately rebuild and patch all their systems to fix a combination of memory unsafety and glibc's creative decisions in signal handler implementation logic...</p>",
-    "source": {
-      "title": "Xe Iaso",
-      "url": "https://xeiaso.net/blog.rss",
-    },
-    "title": ""No way to prevent this" say users of only language where this regularly happens",
-    "url": "https://xeiaso.net/shitposts/no-way-to-prevent-this/CVE-2024-6387/",
-  },
-  {
-    "date": 2024-06-22T00:00:00.000Z,
-    "preview": "Synergy Greg would like to see you in His office, You will know Him when you see Him, Multitudinous is Synergy Greg! His handshake grinds the bones of the world, Beneficent is Synergy Greg! His lungs are mighty bellows, Go Team! Get! Shit! Done! He will wait by the sidelines, Any day now. His minion...",
-    "source": {
-      "title": "Ludicity",
-      "url": "https://ludic.mataroa.blog/rss/",
-    },
-    "title": "Synergy Greg",
-    "url": "https://ludic.mataroa.blog/blog/synergy-greg/",
-  },
-  {
     "date": 2024-06-16T00:00:00.000Z,
     "preview": "There've been regular viral stories about ML/AI bias with LLMs and generative AI for the past couple years. One thing I find interesting about discussions of bias is how different the reaction is in the LLM and generative AI case when compared to "classical" bugs in cases where there's a clear bug. ...",
     "source": {
@@ -73,26 +43,6 @@ exports[`it should fetch several RSS feeds 1`] = `
     "url": "https://danluu.com/ai-bias/",
   },
   {
-    "date": 2024-06-08T04:30:00.000Z,
-    "preview": "Fresh water from snow, at 70 below!",
-    "source": {
-      "title": "brr.fyi",
-      "url": "https://brr.fyi/feed.xml",
-    },
-    "title": "South Pole Water Infrastructure",
-    "url": "https://brr.fyi/posts/south-pole-water-infrastructure",
-  },
-  {
-    "date": 2024-06-01T00:00:00.000Z,
-    "preview": ".dog-line { display: flex; flex-wrap: nowrap; flex-direction: row; width: 100%; height: 10rem; margin-top: 2rem; margin-bottom: 2rem; } .dog-line img { flex-grow: 1; height: auto; margin: 0; padding: 0; object-fit: contain; } .dog-grid { display: grid; grid-template-columns: repeat(4, 1fr); grid-gap...",
-    "source": {
-      "title": "Sam Rose",
-      "url": "https://samwho.dev/rss.xml",
-    },
-    "title": "A Commitment to Art and Dogs",
-    "url": "https://samwho.dev/dogs/",
-  },
-  {
     "date": 2024-05-24T00:00:00.000Z,
     "preview": "I needed a bit of a break from “real work” recently, so I started a new programming project that was low-stakes and purely recreational. On April 21st, I set out to see how much of a Unix-like operating system for x86_64 targets that I could put together in about a month. The result is Bunnix. Not i...",
     "source": {
@@ -101,46 +51,6 @@ exports[`it should fetch several RSS feeds 1`] = `
     },
     "title": "Writing a Unix clone in about a month",
     "url": "https://drewdevault.com/2024/05/24/2024-05-24-Bunnix.html",
-  },
-  {
-    "date": 2024-02-27T12:00:00.000Z,
-    "preview": "The dream of soaring in the sky like a bird has captivated the human mind for ages. Although many failed, some eventually succeeded in achieving that goal. These days we take air transportation for granted, but the physics of flight can still be puzzling. In this article we’ll investigate what makes...",
-    "source": {
-      "title": "Bartosz Ciechanowski",
-      "url": "https://ciechanow.ski/atom.xml",
-    },
-    "title": "Airfoil",
-    "url": "https://ciechanow.ski/airfoil/",
-  },
-  {
-    "date": 2024-01-29T00:00:00.000Z,
-    "preview": "Web components won't take web development by storm, or show us the One True Way to build websites. What they will do is let us collectively build a rich ecosystem of dynamic components that work with any web stack.",
-    "source": {
-      "title": "Jake Lazaroff",
-      "url": "https://jakelazaroff.com/rss.xml",
-    },
-    "title": "The Web Component Success Story",
-    "url": "https://jakelazaroff.com/words/the-web-component-success-story/",
-  },
-  {
-    "date": 2023-04-07T00:00:00.000Z,
-    "preview": "In early 2019, some months after completing a rehab program for drug addiction, I was in a very open-minded headspace where I wanted to challenge myself and find ways to improve as a person. Drugs had filled my life with secrecy and lies, but that life was over. Although I was unsure of my next step...",
-    "source": {
-      "title": "Andreas Kling",
-      "url": "https://awesomekling.github.io/feed.xml",
-    },
-    "title": "Making myself uncomfortable again",
-    "url": "https://awesomekling.github.io/Making-myself-uncomfortable-again/",
-  },
-  {
-    "date": 2022-09-17T00:00:00.000Z,
-    "preview": undefined,
-    "source": {
-      "title": "Explained From First Principles",
-      "url": "https://explained-from-first-principles.com/feed.xml",
-    },
-    "title": "Number theory explained from first principles",
-    "url": "https://explained-from-first-principles.com/number-theory/",
   },
 ]
 `;

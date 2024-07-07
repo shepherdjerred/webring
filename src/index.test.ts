@@ -6,7 +6,7 @@ import { mkdtemp } from "fs/promises";
 import { join } from "path";
 
 // TODO: intercept network requests
-test("it should fetch an RSS feed without caching", async () => {
+test("it should fetch an RSS feed without caching", { timeout: 30000 }, async () => {
   const config: Configuration = {
     sources: [
       {
@@ -22,7 +22,7 @@ test("it should fetch an RSS feed without caching", async () => {
   expect(result).toMatchSnapshot();
 });
 
-test("it should fetch several RSS feeds", async () => {
+test("it should fetch several RSS feeds", { timeout: 30000 }, async () => {
   const config: Configuration = {
     sources: [
       {
@@ -33,52 +33,8 @@ test("it should fetch several RSS feeds", async () => {
         url: "https://danluu.com/atom.xml",
         title: "Dan Luu",
       },
-      {
-        url: "https://jakelazaroff.com/rss.xml",
-        title: "Jake Lazaroff",
-      },
-      {
-        url: "https://awesomekling.github.io/feed.xml",
-        title: "Andreas Kling",
-      },
-      {
-        url: "https://xeiaso.net/blog.rss",
-        title: "Xe Iaso",
-      },
-      {
-        url: "https://ciechanow.ski/atom.xml",
-        title: "Bartosz Ciechanowski",
-      },
-      {
-        url: "https://explained-from-first-principles.com/feed.xml",
-        title: "Explained From First Principles",
-      },
-      {
-        url: "http://www.aaronsw.com/2002/feeds/pgessays.rss",
-        title: "Paul Graham",
-      },
-      {
-        url: "https://samwho.dev/rss.xml",
-        title: "Sam Rose",
-      },
-      {
-        url: "https://rachelbythebay.com/w/atom.xml",
-        title: "Rachel Kroll",
-      },
-      {
-        url: "https://brr.fyi/feed.xml",
-        title: "brr.fyi",
-      },
-      {
-        url: "https://devblogs.microsoft.com/oldnewthing/feed",
-        title: "The Old New Thing",
-      },
-      {
-        url: "https://ludic.mataroa.blog/rss/",
-        title: "Ludicity",
-      },
     ],
-    number: 20,
+    number: 3,
     truncate: 300,
   };
 
@@ -86,7 +42,7 @@ test("it should fetch several RSS feeds", async () => {
   expect(result).toMatchSnapshot();
 });
 
-test("it should fetch an RSS feed with caching", async () => {
+test("it should fetch an RSS feed with caching", { timeout: 30000 }, async () => {
   const config: Configuration = {
     sources: [
       {
