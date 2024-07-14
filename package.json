@@ -54,7 +54,7 @@
     "typedoc-plugin-zod": "^1.2.0",
     "typescript": "^5.4.5",
     "typescript-eslint": "^7.11.0",
-    "vitest": "^1.6.0"
+    "vitest": "^2.0.0"
   },
   "lint-staged": {
     "*.{ts,tsx}": "eslint --cache --fix",
