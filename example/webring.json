@@ -1,1 +1,32 @@
-{"https://drewdevault.com/blog/index.xml":{"timestamp":"2024-06-28T16:41:11.016Z","data":{"title":"Writing a Unix clone in about a month","url":"https://drewdevault.com/2024/05/24/2024-05-24-Bunnix.html","date":"2024-05-24T00:00:00.000Z","source":{"url":"https://drewdevault.com/blog/index.xml","title":"Drew DeVault"},"preview":"I needed a bit of a break from “real work” recently, so I started a new programming project that was low-stakes and purely recreational. On April 21st, I set out to see how much of a Unix-like operating system for x86_64 targets that I could put together in about a month. The result is Bunnix. Not i..."}},"https://danluu.com/atom.xml":{"timestamp":"2024-06-28T16:41:11.016Z","data":{"title":"A discussion of discussions on AI bias","url":"https://danluu.com/ai-bias/","date":"2024-06-16T00:00:00.000Z","source":{"url":"https://danluu.com/atom.xml","title":"Dan Luu"},"preview":"There've been regular viral stories about ML/AI bias with LLMs and generative AI for the past couple years. One thing I find interesting about discussions of bias is how different the reaction is in the LLM and generative AI case when compared to \"classical\" bugs in cases where there's a clear bug. ..."}},"https://jakelazaroff.com/rss.xml":{"timestamp":"2024-06-28T16:41:11.016Z","data":{"title":"The Web Component Success Story","url":"https://jakelazaroff.com/words/the-web-component-success-story/","date":"2024-01-29T00:00:00.000Z","source":{"url":"https://jakelazaroff.com/rss.xml","title":"Jake Lazaroff"},"preview":"Web components won't take web development by storm, or show us the One True Way to build websites. What they will do is let us collectively build a rich ecosystem of dynamic components that work with any web stack."}}}
+{
+  "https://drewdevault.com/blog/index.xml": {
+    "timestamp": "2024-07-13T02:24:44.688Z",
+    "data": {
+      "title": "Writing a Unix clone in about a month",
+      "url": "https://drewdevault.com/2024/05/24/2024-05-24-Bunnix.html",
+      "date": "2024-05-24T00:00:00.000Z",
+      "source": { "url": "https://drewdevault.com/blog/index.xml", "title": "Drew DeVault" },
+      "preview": "I needed a bit of a break from “real work” recently, so I started a new programming project that was low-stakes and purely recreational. On April 21st, I set out to see how much of a Unix-like operating system for x86_64 targets that I could put together in about a month. The result is Bunnix. Not i..."
+    }
+  },
+  "https://danluu.com/atom.xml": {
+    "timestamp": "2024-07-13T02:24:44.688Z",
+    "data": {
+      "title": "A discussion of discussions on AI bias",
+      "url": "https://danluu.com/ai-bias/",
+      "date": "2024-06-16T00:00:00.000Z",
+      "source": { "url": "https://danluu.com/atom.xml", "title": "Dan Luu" },
+      "preview": "There've been regular viral stories about ML/AI bias with LLMs and generative AI for the past couple years. One thing I find interesting about discussions of bias is how different the reaction is in the LLM and generative AI case when compared to \"classical\" bugs in cases where there's a clear bug. ..."
+    }
+  },
+  "https://jakelazaroff.com/rss.xml": {
+    "timestamp": "2024-07-13T02:24:44.688Z",
+    "data": {
+      "title": "The Web Component Success Story",
+      "url": "https://jakelazaroff.com/words/the-web-component-success-story/",
+      "date": "2024-01-29T00:00:00.000Z",
+      "source": { "url": "https://jakelazaroff.com/rss.xml", "title": "Jake Lazaroff" },
+      "preview": "Web components won't take web development by storm, or show us the One True Way to build websites. What they will do is let us collectively build a rich ecosystem of dynamic components that work with any web stack."
+    }
+  }
+}

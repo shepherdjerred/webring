@@ -14,6 +14,7 @@ export async function fetchAll(config: Configuration) {
 
 export async function fetch(source: Source, length: number): Promise<ResultEntry | undefined> {
   const parser = new Parser();
+
   try {
     const feed = await parser.parseURL(source.url);
 
