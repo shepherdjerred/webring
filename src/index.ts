@@ -15,14 +15,24 @@ export async function run(config: Configuration): Promise<Result> {
     result = await fetchAllUncached(config);
   }
 
-  const topResults = R.pipe(
+  let results = R.pipe(
     result,
     R.sortBy((result) => result.date.getTime()),
     R.reverse(),
-    R.take(config.number),
+    R.filter((result) => {
+      return result.source.filter && result.preview ? result.source.filter(result.preview) : true;
+    }),
   );
 
-  return topResults;
+  // shuffle if wanted
+  if (config.shuffle) {
+    results = R.shuffle(results);
+  }
+
+  // take n
+  results = R.take(results, config.number);
+
+  return results;
 }
 
 export * from "./types.js";

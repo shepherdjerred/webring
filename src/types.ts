@@ -7,6 +7,8 @@ const SourceSchema = z.object({
   url: z.string(),
   /** A title to describe the feed */
   title: z.string().describe("A title for the feed"),
+  /** Takes a entry preview and returns whether or not it should be displayed */
+  filter: z.function().args(z.string()).returns(z.boolean()).optional(),
 });
 
 export type CacheConfiguration = z.infer<typeof CacheConfigurationSchema>;
@@ -29,6 +31,8 @@ const ConfigurationSchema = z.object({
   truncate: z.number().default(300),
   /** Configuration for the cache */
   cache: CacheConfigurationSchema.optional(),
+  /** Randomize the output order */
+  shuffle: z.boolean().default(false).optional(),
 });
 
 export type CachedConfiguration = z.infer<typeof CachedConfigurationSchema>;

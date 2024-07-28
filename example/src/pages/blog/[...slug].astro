@@ -20,6 +20,7 @@ export const config: Configuration = {
     {
       url: "https://drewdevault.com/blog/index.xml",
       title: "Drew DeVault",
+      filter: (preview) => preview.includes("open source"),
     },
     {
       url: "https://danluu.com/atom.xml",
@@ -33,7 +34,7 @@ export const config: Configuration = {
   // the output will return the three most recent posts from the above sources
   number: 3,
   // the output will return santized HTML truncated to 300 characters
-  truncate: 300,
+  truncate: 50,
   // if this is defined, we'll cache the results
   cache: {
     // the file to use as a cache
@@ -41,6 +42,7 @@ export const config: Configuration = {
     // how long the cache should remain valid for
     cache_duration_minutes: 60,
   },
+  shuffle: true,
 };
 
 export const result: Result = await run(config);
@@ -53,7 +55,7 @@ export const result: Result = await run(config);
     {
       result.map((post) => (
         <li>
-          <a href={post.url}>{post.title}</a>
+          <a href={post.url}>{post.title}</a>: {post.preview}
         </li>
       ))
     }
