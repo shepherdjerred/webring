@@ -11,14 +11,14 @@ import {
 } from "./types.js";
 import { fetch } from "./fetch.js";
 import { asyncMapFilterUndefined } from "./util.js";
-import fs from "fs/promises";
+import * as fs from "fs/promises";
 
 async function loadCache({ cache_file }: CacheConfiguration): Promise<Cache> {
   try {
     await fs.access(cache_file);
     const cacheFile = await fs.readFile(cache_file);
     return CacheSchema.parse(JSON.parse(cacheFile.toString()));
-  } catch (e) {
+  } catch (_e) {
     return {};
   }
 }

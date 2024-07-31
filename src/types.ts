@@ -59,7 +59,7 @@ const ResultEntrySchema = z.object({
 
 export type Result = z.infer<typeof ResultSchema>;
 /** A list of results */
-const ResultSchema = z.array(ResultEntrySchema);
+export const ResultSchema = z.array(ResultEntrySchema);
 
 export type CacheEntry = z.infer<typeof CacheEntrySchema>;
 /** A single cache entry */
