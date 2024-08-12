@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0](https://github.com/shepherdjerred/webring/compare/v1.1.4...v1.2.0) (2024-08-12)
+
+
+### Features
+
+* add ability to filter and shuffle ([51dcc9d](https://github.com/shepherdjerred/webring/commit/51dcc9d946ed0bee2f854cf5249d8cd9680e1bc6))
+* update to eslint 9 ([7721ac1](https://github.com/shepherdjerred/webring/commit/7721ac190acfdabfd7b6ece3019c018a05700336))
+
+
+### Bug Fixes
+
+* **deps:** update npm ([27dd6e3](https://github.com/shepherdjerred/webring/commit/27dd6e3e96be57ad3093e494234e3ba2d790494c))
+
 ## [1.1.4](https://github.com/shepherdjerred/webring/compare/v1.1.3...v1.1.4) (2024-07-28)
 
 
