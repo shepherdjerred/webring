@@ -14,6 +14,8 @@ app.listen(port, () => {
   console.log(`Test server listening at http://localhost:${port.toString()}`);
 });
 
+await new Promise((resolve) => setTimeout(resolve, 500));
+
 function createUrl(path: string): string {
   return `http://localhost:${port.toString()}/${path}`;
 }

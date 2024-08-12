@@ -20,7 +20,11 @@ export async function run(config: Configuration): Promise<Result> {
     R.sortBy((result) => result.date.getTime()),
     R.reverse(),
     R.filter((result) => {
-      return result.source.filter && result.preview ? result.source.filter(result.preview) : true;
+      if (result.source.filter && result.preview) {
+        return result.source.filter(result.preview);
+      } else {
+        return true;
+      }
     }),
   );
 

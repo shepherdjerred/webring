@@ -1,1 +1,22 @@
-{"https://drewdevault.com/blog/index.xml":{"timestamp":"2024-07-28T22:01:26.218Z","data":{"title":"So you want to compete with or replace open source","url":"https://drewdevault.com/2024/07/16/2024-07-16-So-you-want-to-compete-with-FOSS.html","date":"2024-07-16T00:00:00.000Z","source":{"url":"https://drewdevault.com/blog/index.xml","title":"Drew DeVault"},"preview":"We are living through an interesting moment in sou..."}},"https://danluu.com/atom.xml":{"timestamp":"2024-07-28T22:01:26.218Z","data":{"title":"A discussion of discussions on AI bias","url":"https://danluu.com/ai-bias/","date":"2024-06-16T00:00:00.000Z","source":{"url":"https://danluu.com/atom.xml","title":"Dan Luu"},"preview":"There've been regular viral stories about ML/AI bi..."}},"https://jakelazaroff.com/rss.xml":{"timestamp":"2024-07-28T22:01:26.218Z","data":{"title":"The Web Component Success Story","url":"https://jakelazaroff.com/words/the-web-component-success-story/","date":"2024-01-29T00:00:00.000Z","source":{"url":"https://jakelazaroff.com/rss.xml","title":"Jake Lazaroff"},"preview":"Web components won't take web development by storm..."}}}
+{
+  "https://danluu.com/atom.xml": {
+    "timestamp": "2024-08-12T18:11:28.485Z",
+    "data": {
+      "title": "A discussion of discussions on AI bias",
+      "url": "https://danluu.com/ai-bias/",
+      "date": "2024-06-16T00:00:00.000Z",
+      "source": { "url": "https://danluu.com/atom.xml", "title": "Dan Luu" },
+      "preview": "There've been regular viral stories about ML/AI bi..."
+    }
+  },
+  "https://jakelazaroff.com/rss.xml": {
+    "timestamp": "2024-08-12T18:11:28.485Z",
+    "data": {
+      "title": "The Web Component Success Story",
+      "url": "https://jakelazaroff.com/words/the-web-component-success-story/",
+      "date": "2024-01-29T00:00:00.000Z",
+      "source": { "url": "https://jakelazaroff.com/rss.xml", "title": "Jake Lazaroff" },
+      "preview": "Web components won't take web development by storm..."
+    }
+  }
+}
