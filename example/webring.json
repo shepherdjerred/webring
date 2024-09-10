@@ -1,16 +1,26 @@
 {
-  "https://danluu.com/atom.xml": {
-    "timestamp": "2024-08-12T18:11:28.485Z",
+  "https://drewdevault.com/blog/index.xml": {
+    "timestamp": "2024-09-10T03:12:37.126Z",
     "data": {
-      "title": "A discussion of discussions on AI bias",
-      "url": "https://danluu.com/ai-bias/",
-      "date": "2024-06-16T00:00:00.000Z",
+      "title": "Rust for Linux revisited",
+      "url": "https://drewdevault.com/2024/08/30/2024-08-30-Rust-in-Linux-revisited.html",
+      "date": "2024-08-30T00:00:00.000Z",
+      "source": { "url": "https://drewdevault.com/blog/index.xml", "title": "Drew DeVault" },
+      "preview": "Ugh. Drew’s blogging about Rust again. – You I pro..."
+    }
+  },
+  "https://danluu.com/atom.xml": {
+    "timestamp": "2024-09-10T03:12:37.126Z",
+    "data": {
+      "title": "How good can you be at Codenames without knowing any words?",
+      "url": "https://danluu.com/codenames/",
+      "date": "2024-08-11T00:00:00.000Z",
       "source": { "url": "https://danluu.com/atom.xml", "title": "Dan Luu" },
-      "preview": "There've been regular viral stories about ML/AI bi..."
+      "preview": "About eight years ago, I was playing a game of Cod..."
     }
   },
   "https://jakelazaroff.com/rss.xml": {
-    "timestamp": "2024-08-12T18:11:28.485Z",
+    "timestamp": "2024-09-10T03:12:37.126Z",
     "data": {
       "title": "The Web Component Success Story",
       "url": "https://jakelazaroff.com/words/the-web-component-success-story/",
