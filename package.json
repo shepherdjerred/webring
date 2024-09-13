@@ -28,7 +28,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "dependencies": {
-    "remeda": "^2.12.0",
+    "remeda": "^2.12.1",
     "rss-parser": "^3.13.0",
     "sanitize-html": "^2.13.0",
     "truncate-html": "^1.1.2",
@@ -40,8 +40,8 @@
     }
   },
   "devDependencies": {
-    "@commitlint/cli": "^19.4.1",
-    "@commitlint/config-conventional": "^19.4.1",
+    "@commitlint/cli": "^19.5.0",
+    "@commitlint/config-conventional": "^19.5.0",
     "@eslint/js": "^9.10.0",
     "@tsconfig/node20": "^20.1.4",
     "@tsconfig/strictest": "^2.0.5",
@@ -50,16 +50,16 @@
     "@types/node": "^22.5.4",
     "@types/sanitize-html": "^2.13.0",
     "eslint": "^9.10.0",
-    "express": "^4.20.0",
+    "express": "^4.21.0",
     "globals": "^15.9.0",
-    "husky": "^9.1.5",
+    "husky": "^9.1.6",
     "lint-staged": "^15.2.10",
     "prettier": "^3.3.3",
     "typedoc": "^0.26.7",
     "typedoc-plugin-zod": "^1.2.1",
     "typescript": "^5.6.2",
     "typescript-eslint": "^8.5.0",
-    "vitest": "^2.0.5"
+    "vitest": "^2.1.1"
   },
   "lint-staged": {
     "*.{ts,tsx}": "eslint --cache --fix",
