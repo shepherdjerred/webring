@@ -16,6 +16,7 @@
     },
     {
       "matchManagers": ["npm"],
+      "excludePackageNames": ["cheerio"],
       "groupName": "{{manager}}"
     }
   ]
