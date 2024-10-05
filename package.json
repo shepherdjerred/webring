@@ -34,11 +34,6 @@
     "truncate-html": "^1.1.2",
     "zod": "^3.23.8"
   },
-  "overrides": {
-    "truncate-html": {
-      "cheerio": "1.0.0-rc.12"
-    }
-  },
   "devDependencies": {
     "@commitlint/cli": "^19.5.0",
     "@commitlint/config-conventional": "^19.5.0",
