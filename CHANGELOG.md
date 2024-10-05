@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.5](https://github.com/shepherdjerred/webring/compare/v1.2.4...v1.2.5) (2024-10-05)
+
+
+### Bug Fixes
+
+* update cheerio ([912c4c0](https://github.com/shepherdjerred/webring/commit/912c4c0d74c0e731b6e4a42e621844978b0514c5))
+* update renovate ([e99d849](https://github.com/shepherdjerred/webring/commit/e99d849756ded9df52b6a7921b4b14141d669efc))
+
 ## [1.2.4](https://github.com/shepherdjerred/webring/compare/v1.2.3...v1.2.4) (2024-10-05)
 
 
