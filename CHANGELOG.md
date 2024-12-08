@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.7](https://github.com/shepherdjerred/webring/compare/v1.2.6...v1.2.7) (2024-12-08)
+
+
+### Bug Fixes
+
+* **deps:** update npm ([6e02795](https://github.com/shepherdjerred/webring/commit/6e02795b6c803c8c67b8e61e6e03af29f490a60d))
+* **deps:** update npm ([05d3700](https://github.com/shepherdjerred/webring/commit/05d3700a5433240bb8c68ef2c197fbc50ca4d1eb))
+
 ## [1.2.6](https://github.com/shepherdjerred/webring/compare/v1.2.5...v1.2.6) (2024-11-10)
 
 
