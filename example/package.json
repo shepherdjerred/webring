@@ -10,12 +10,12 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/mdx": "^4.0.0",
-    "@astrojs/rss": "^4.0.9",
+    "@astrojs/mdx": "^4.0.2",
+    "@astrojs/rss": "^4.0.10",
     "@astrojs/sitemap": "^3.2.1",
-    "astro": "^5.0.0",
+    "astro": "^5.0.5",
     "@astrojs/check": "^0.9.4",
-    "typescript": "^5.6.3",
+    "typescript": "^5.7.2",
     "webring": "../"
   }
 }
