@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.0](https://github.com/shepherdjerred/webring/compare/v1.2.7...v1.3.0) (2024-12-20)
+
+
+### Features
+
+* use Earthly for CI ([f724d1a](https://github.com/shepherdjerred/webring/commit/f724d1a9c1d44e2be19d78751e205ad70e6802b7))
+
+
+### Bug Fixes
+
+* **deps:** update dependency astro to v5.0.8 [security] ([85e2e23](https://github.com/shepherdjerred/webring/commit/85e2e23f30f6201ee86a8fd535c5ce743e75722e))
+* reviewer ([d216b08](https://github.com/shepherdjerred/webring/commit/d216b0874c13b095ae8b0931126724293c869fc4))
+
 ## [1.2.7](https://github.com/shepherdjerred/webring/compare/v1.2.6...v1.2.7) (2024-12-08)
 
 
