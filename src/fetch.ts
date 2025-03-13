@@ -5,9 +5,6 @@ import { type Source, type ResultEntry, FeedEntrySchema, type Configuration } fr
 import * as R from "remeda";
 import { asyncMapFilterUndefined } from "./util.js";
 
-// for some reason, TypeScript does not infer the type of the default export correctly
-const truncateFn: typeof truncate.default = truncate as unknown as typeof truncate.default;
-
 export async function fetchAll(config: Configuration) {
   return await asyncMapFilterUndefined(config.sources, (source) => fetch(source, config.truncate));
 }
@@ -39,12 +36,10 @@ export async function fetch(source: Source, length: number): Promise<ResultEntry
       date: new Date(firstItem.date),
       source,
       preview: preview
-        ? truncateFn(
-            sanitizeHtml(preview, {
-              parseStyleAttributes: false,
-            }),
-            length,
-          )
+        ? ((truncate.default(sanitizeHtml(preview, { parseStyleAttributes: false }), length) as Exclude<
+            ReturnType<typeof truncate.default>,
+            object
+          >) ?? undefined)
         : undefined,
     };
   } catch (e) {
