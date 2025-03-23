@@ -23,6 +23,7 @@
     "build": "tsc",
     "watch": "tsc -w",
     "test": "vitest --disable-console-intercept",
+    "test:update": "vitest --disable-console-intercept --update",
     "typedoc": "typedoc src/index.ts"
   },
   "main": "dist/index.js",
