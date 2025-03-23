@@ -35,12 +35,7 @@ export async function fetch(source: Source, length: number): Promise<ResultEntry
       url: firstItem.link,
       date: new Date(firstItem.date),
       source,
-      preview: preview
-        ? ((truncate.default(sanitizeHtml(preview, { parseStyleAttributes: false }), length) as Exclude<
-            ReturnType<typeof truncate.default>,
-            object
-          >) ?? undefined)
-        : undefined,
+      preview: preview ? truncate.default(sanitizeHtml(preview, { parseStyleAttributes: false }), length) : undefined,
     };
   } catch (e) {
     console.error(`Error fetching ${source.url}: ${e as string}`);
