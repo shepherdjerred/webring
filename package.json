@@ -47,7 +47,7 @@
     "express": "^5.0.0",
     "globals": "^16.0.0",
     "husky": "^9.1.7",
-    "lint-staged": "^15.5.0",
+    "lint-staged": "^16.0.0",
     "prettier": "^3.5.3",
     "typedoc": "^0.28.0",
     "typedoc-plugin-zod": "^1.4.0",
