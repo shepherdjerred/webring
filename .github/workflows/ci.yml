@@ -31,6 +31,5 @@ jobs:
       - name: Run Dagger CI pipeline
         run: |
           dagger call ci --source=.
-
 permissions:
   contents: read

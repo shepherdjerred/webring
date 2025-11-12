@@ -16,20 +16,14 @@ jobs:
           release-type: node
       - uses: actions/checkout@v4
         if: ${{ steps.release.outputs.release_created }}
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          registry-url: "https://registry.npmjs.org"
+      - name: Install Dagger CLI
         if: ${{ steps.release.outputs.release_created }}
-      - run: npm ci
+        run: |
+          curl -L https://dl.dagger.io/dagger/install.sh | BIN_DIR=$HOME/.local/bin sh
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+      - name: Run Dagger release process
         if: ${{ steps.release.outputs.release_created }}
-      - run: npm run lint
-        if: ${{ steps.release.outputs.release_created }}
-      - run: npm run build
-        if: ${{ steps.release.outputs.release_created }}
-      - run: npm test
-        if: ${{ steps.release.outputs.release_created }}
-      - run: npm publish
+        run: |
+          dagger call release --source=. --npm-token=env:NPM_TOKEN
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        if: ${{ steps.release.outputs.release_created }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

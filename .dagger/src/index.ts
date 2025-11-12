@@ -1,4 +1,4 @@
-import { func, argument, Directory, object, Container, dag } from "@dagger.io/dagger";
+import { func, argument, Directory, object, Container, dag, Secret } from "@dagger.io/dagger";
 
 // Helper function to log with timestamp
 function logWithTimestamp(message: string): void {
@@ -185,5 +185,93 @@ export class Webring {
 
     logWithTimestamp("🎉 CI pipeline completed successfully");
     return `CI pipeline completed successfully:\n- Lint: ${lintResult}\n- Build: completed\n- Test: ${testResult}`;
+  }
+
+  /**
+   * Publish the package to NPM
+   * @param source The source directory
+   * @param npmToken The NPM token
+   * @returns A message indicating completion
+   */
+  @func()
+  async publish(
+    @argument({
+      ignore: ["node_modules", "dist", "build", ".cache", "*.log", ".env*", "!.env.example", ".dagger", "generated"],
+      defaultPath: ".",
+    })
+    source: Directory,
+    @argument() npmToken: Secret,
+  ): Promise<string> {
+    logWithTimestamp("📦 Publishing package to NPM");
+
+    const buildDir = await this.build(source);
+    const depsContainer = await this.deps(source);
+
+    const result = await withTiming("npm publish", async () => {
+      return depsContainer
+        .withDirectory("dist", buildDir)
+        .withSecretVariable("NPM_TOKEN", npmToken)
+        .withExec([
+          "sh",
+          "-c",
+          'echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > /workspace/.npmrc',
+        ])
+        .withExec(["npm", "publish"])
+        .stdout();
+    });
+
+    logWithTimestamp("✅ Package published successfully");
+    return result;
+  }
+
+  /**
+   * Run the full release process
+   * @param source The source directory
+   * @param npmToken The NPM token
+   * @returns A message indicating completion
+   */
+  @func()
+  async release(
+      @argument({
+      ignore: ["node_modules", "dist", "build", ".cache", "*.log", ".env*", "!.env.example", ".dagger", "generated"],
+      defaultPath: ".",
+    })
+    source: Directory,
+    @argument() npmToken: Secret,
+  ): Promise<string> {
+      logWithTimestamp("🚀 Starting release process");
+      await this.test(source);
+      const result = await this.publish(source, npmToken);
+      return result;
+  }
+
+  /**
+   * Generate TypeDoc documentation
+   * @param source The source directory
+   * @returns A directory containing the generated documentation
+   */
+  @func()
+  async deployDocs(
+    @argument({
+      ignore: ["node_modules", "dist", "build", ".cache", "*.log", ".env*", "!.env.example", ".dagger", "generated"],
+      defaultPath: ".",
+    })
+    source: Directory,
+  ): Promise<Directory> {
+    logWithTimestamp("📚 Generating TypeDoc documentation");
+
+    const depsContainer = await this.deps(source);
+
+    const docsDir = await withTiming("typedoc", async () => {
+      return depsContainer
+        .withDirectory("src", source.directory("src"))
+        .withFile("typedoc.json", source.file("typedoc.json"))
+        .withFile("tsconfig.json", source.file("tsconfig.json"))
+        .withExec(["npm", "run", "typedoc"])
+        .directory("docs");
+    });
+
+    logWithTimestamp("✅ TypeDoc documentation generated successfully");
+    return docsDir;
   }
 }
