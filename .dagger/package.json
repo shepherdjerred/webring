@@ -24,8 +24,6 @@
     "typescript-eslint": "^8.26.1"
   },
   "overrides": {
-    "@shepherdjerred/dagger-utils": {
-      "@dagger.io/dagger": "$@dagger.io/dagger"
-    }
+    "@dagger.io/dagger": "^0.19.8"
   }
 }
