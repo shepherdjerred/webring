@@ -4,14 +4,15 @@
   "private": true,
   "packageManager": "npm@10.9.2",
   "scripts": {
-    "postinstall": "echo 'export * from \"./dist/src/index.js\";' > node_modules/@dagger.io/dagger/index.js 2>/dev/null || true",
     "build": "echo 'Dagger module ready'",
     "test": "echo 'No tests configured for Dagger module'",
-    "type-check": "npm run tsc -- --noEmit",
-    "lint": "npx eslint src",
-    "format": "npx prettier --check src",
-    "format:write": "npx prettier --write src",
-    "typecheck": "npx tsc --noEmit"
+    "lint": "bunx eslint src",
+    "format": "bunx prettier --check src",
+    "format:write": "bunx prettier --write src",
+    "typecheck": "bunx tsc --noEmit"
+  },
+  "dagger": {
+    "runtime": "bun"
   },
   "dependencies": {
     "@dagger.io/dagger": "^0.19.8",
