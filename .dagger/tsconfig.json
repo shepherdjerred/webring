@@ -18,10 +18,6 @@
     "noPropertyAccessFromIndexSignature": true,
     "allowUnusedLabels": false,
     "forceConsistentCasingInFileNames": true,
-    "allowUnreachableCode": false,
-    "paths": {
-      "@dagger.io/dagger": ["./sdk/index.ts"],
-      "@dagger.io/dagger/telemetry": ["./sdk/telemetry.ts"]
-    }
+    "allowUnreachableCode": false
   }
 }
