@@ -4,6 +4,7 @@
   "private": true,
   "packageManager": "npm@10.9.2",
   "scripts": {
+    "postinstall": "echo 'export * from \"./dist/src/index.js\";' > node_modules/@dagger.io/dagger/index.js 2>/dev/null || true",
     "build": "echo 'Dagger module ready'",
     "test": "echo 'No tests configured for Dagger module'",
     "type-check": "npm run tsc -- --noEmit",
