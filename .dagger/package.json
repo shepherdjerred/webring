@@ -2,7 +2,6 @@
   "name": "@webring/dagger",
   "type": "module",
   "private": true,
-  "packageManager": "npm@10.9.2",
   "scripts": {
     "build": "echo 'Dagger module ready'",
     "test": "echo 'No tests configured for Dagger module'",
