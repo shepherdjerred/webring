@@ -102,16 +102,24 @@ export class Webring {
       // Run unit tests
       const testResult = await depsContainer.withExec(["bun", "run", "test", "--", "--run"]).stdout();
 
-      // Test example app - setup parent context with built dist
+      // Test example app - manually link dist to avoid recursive symlinks
+      // The example's package.json has "webring": "../" which creates a symlink
+      // to the parent directory. Running "bun install" creates example/node_modules/webring -> ../
+      // which recursively includes example/ itself, corrupting the Dagger cache.
+      // Instead, we manually set up the node_modules with the built dist.
       const exampleContainer = getBunContainerWithCache(source, "latest")
         .withDirectory("dist", buildDir)
-        .withExec(["bun", "install", "--frozen-lockfile"]);
-
-      await exampleContainer
-        .withWorkdir("/workspace/example")
         .withExec(["bun", "install", "--frozen-lockfile"])
-        .withExec(["bun", "run", "build"])
-        .stdout();
+        .withWorkdir("/workspace/example")
+        // Install example deps but skip the webring link
+        .withExec(["sh", "-c", "mkdir -p node_modules && bun install --ignore-scripts || true"])
+        // Manually link the built dist as webring package
+        .withExec(["rm", "-rf", "node_modules/webring"])
+        .withExec(["mkdir", "-p", "node_modules/webring"])
+        .withExec(["cp", "-r", "../dist/.", "node_modules/webring/"])
+        .withExec(["cp", "../package.json", "node_modules/webring/"]);
+
+      await exampleContainer.withExec(["bun", "run", "build"]).stdout();
 
       return testResult;
     });
