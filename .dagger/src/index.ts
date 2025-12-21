@@ -1,5 +1,5 @@
 import { func, argument, Directory, object, Container } from "@dagger.io/dagger";
-import { logWithTimestamp, withTiming, getNodeContainerWithCache } from "@shepherdjerred/dagger-utils";
+import { logWithTimestamp, withTiming, getBunContainerWithCache } from "@shepherdjerred/dagger-utils";
 
 @object()
 export class Webring {
@@ -18,7 +18,7 @@ export class Webring {
   ): Container {
     logWithTimestamp("📦 Installing dependencies");
 
-    const container = getNodeContainerWithCache(source).withExec(["npm", "ci"]);
+    const container = getBunContainerWithCache(source, "latest").withExec(["bun", "install", "--frozen-lockfile"]);
 
     return container;
   }
@@ -41,7 +41,7 @@ export class Webring {
     const depsContainer = this.deps(source);
 
     const result = await withTiming("lint", async () => {
-      return depsContainer.withExec(["npm", "run", "lint"]).stdout();
+      return depsContainer.withExec(["bun", "run", "lint"]).stdout();
     });
 
     logWithTimestamp("✅ Linting completed successfully");
@@ -66,7 +66,7 @@ export class Webring {
     const depsContainer = this.deps(source);
 
     const buildDir = await withTiming("build", () => {
-      return depsContainer.withExec(["npm", "run", "build"]).directory("dist");
+      return depsContainer.withExec(["bun", "run", "build"]).directory("dist");
     });
 
     logWithTimestamp("✅ Build completed successfully");
@@ -94,17 +94,17 @@ export class Webring {
 
     const result = await withTiming("test", async () => {
       // Run unit tests
-      const testResult = await depsContainer.withExec(["npm", "run", "test", "--", "--run"]).stdout();
+      const testResult = await depsContainer.withExec(["bun", "run", "test", "--", "--run"]).stdout();
 
       // Test example app - setup parent context with built dist
-      const exampleContainer = getNodeContainerWithCache(source)
+      const exampleContainer = getBunContainerWithCache(source, "latest")
         .withDirectory("dist", buildDir)
-        .withExec(["npm", "ci"]);
+        .withExec(["bun", "install", "--frozen-lockfile"]);
 
       await exampleContainer
         .withWorkdir("/workspace/example")
-        .withExec(["npm", "ci"])
-        .withExec(["npm", "run", "build"])
+        .withExec(["bun", "install", "--frozen-lockfile"])
+        .withExec(["bun", "run", "build"])
         .stdout();
 
       return testResult;
