@@ -5,9 +5,16 @@ on:
     branches: [main]
   pull_request:
 
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
 jobs:
   dagger-ci:
     runs-on: [webring-runner-set]
+    environment:
+      name: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && 'github-pages' || '' }}
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -23,6 +30,7 @@ jobs:
         with:
           export-env: true
         env:
+          DAGGER_CLOUD_TOKEN: op://GitHub Actions/Secrets/add more/DAGGER_CLOUD_TOKEN
           NPM_TOKEN: op://GitHub Actions/Secrets/add more/NPM_TOKEN
 
       - name: Extract kubectl version
@@ -70,9 +78,51 @@ jobs:
           cd .dagger
           bun install
 
-      - name: Run Dagger CI pipeline
+      - name: Determine environment
+        id: env
         run: |
-          dagger call ci --source=.
+          if [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == "refs/heads/main" ]]; then
+            echo "env=prod" >> "$GITHUB_OUTPUT"
+          else
+            echo "env=dev" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Run Dagger CI with release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          ARGS=(
+            --source=.
+            --env="${{ steps.env.outputs.env }}"
+          )
+
+          if [[ "${{ steps.env.outputs.env }}" == "prod" ]]; then
+            ARGS+=(
+              --repo-url="shepherdjerred/webring"
+              --github-token=env:GITHUB_TOKEN
+              --npm-token=env:NPM_TOKEN
+            )
+          fi
+
+          dagger call ci-with-release "${ARGS[@]}" export --path=./artifacts
+
+      - name: Setup Pages
+        if: steps.env.outputs.env == 'prod'
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        if: steps.env.outputs.env == 'prod'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: "./artifacts/docs"
+
+      - name: Deploy to GitHub Pages
+        if: steps.env.outputs.env == 'prod'
+        id: deployment
+        uses: actions/deploy-pages@v4
 
 permissions:
-  contents: read
+  contents: write
+  pull-requests: write
+  pages: write
+  id-token: write
