@@ -33,16 +33,16 @@
     "rss-parser": "^3.13.0",
     "sanitize-html": "^2.14.0",
     "truncate-html": "^1.2.0",
-    "zod": "^3.24.2"
+    "zod": "^4.0.0"
   },
   "devDependencies": {
-    "@commitlint/cli": "^19.8.0",
-    "@commitlint/config-conventional": "^19.8.0",
+    "@commitlint/cli": "^20.0.0",
+    "@commitlint/config-conventional": "^20.0.0",
     "@eslint/js": "^9.22.0",
     "@tsconfig/node20": "^20.1.4",
     "@tsconfig/strictest": "^2.0.5",
     "@types/express": "^5.0.0",
-    "@types/node": "^22.13.10",
+    "@types/node": "^24.0.0",
     "@types/sanitize-html": "^2.13.0",
     "eslint": "^9.22.0",
     "express": "^5.0.0",
@@ -54,7 +54,7 @@
     "typedoc-plugin-zod": "^1.4.0",
     "typescript": "^5.8.2",
     "typescript-eslint": "^8.26.1",
-    "vitest": "^3.0.8"
+    "vitest": "^4.0.0"
   },
   "lint-staged": {
     "*.{ts,tsx}": "eslint --cache --fix",
