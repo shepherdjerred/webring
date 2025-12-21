@@ -17,7 +17,7 @@ export class Webring {
   @func()
   deps(
     @argument({
-      ignore: ["node_modules", "dist", "build", ".cache", "*.log", ".env*", "!.env.example", ".dagger", "generated"],
+      ignore: ["**/node_modules", "dist", "build", ".cache", "*.log", ".env*", "!.env.example", ".dagger", "generated"],
       defaultPath: ".",
     })
     source: Directory,
@@ -37,7 +37,7 @@ export class Webring {
   @func()
   async lint(
     @argument({
-      ignore: ["node_modules", "dist", "build", ".cache", "*.log", ".env*", "!.env.example", ".dagger", "generated"],
+      ignore: ["**/node_modules", "dist", "build", ".cache", "*.log", ".env*", "!.env.example", ".dagger", "generated"],
       defaultPath: ".",
     })
     source: Directory,
@@ -62,7 +62,7 @@ export class Webring {
   @func()
   async build(
     @argument({
-      ignore: ["node_modules", "dist", "build", ".cache", "*.log", ".env*", "!.env.example", ".dagger", "generated"],
+      ignore: ["**/node_modules", "dist", "build", ".cache", "*.log", ".env*", "!.env.example", ".dagger", "generated"],
       defaultPath: ".",
     })
     source: Directory,
@@ -87,7 +87,7 @@ export class Webring {
   @func()
   async test(
     @argument({
-      ignore: ["node_modules", "dist", "build", ".cache", "*.log", ".env*", "!.env.example", ".dagger", "generated"],
+      ignore: ["**/node_modules", "dist", "build", ".cache", "*.log", ".env*", "!.env.example", ".dagger", "generated"],
       defaultPath: ".",
     })
     source: Directory,
@@ -128,7 +128,7 @@ export class Webring {
   @func()
   async ci(
     @argument({
-      ignore: ["node_modules", "dist", "build", ".cache", "*.log", ".env*", "!.env.example", ".dagger", "generated"],
+      ignore: ["**/node_modules", "dist", "build", ".cache", "*.log", ".env*", "!.env.example", ".dagger", "generated"],
       defaultPath: ".",
     })
     source: Directory,
@@ -155,7 +155,7 @@ export class Webring {
   @func()
   async typedoc(
     @argument({
-      ignore: ["node_modules", "dist", "build", ".cache", "*.log", ".env*", "!.env.example", ".dagger", "generated"],
+      ignore: ["**/node_modules", "dist", "build", ".cache", "*.log", ".env*", "!.env.example", ".dagger", "generated"],
       defaultPath: ".",
     })
     source: Directory,
@@ -181,7 +181,7 @@ export class Webring {
   @func()
   async publish(
     @argument({
-      ignore: ["node_modules", "dist", "build", ".cache", "*.log", ".env*", "!.env.example", ".dagger", "generated"],
+      ignore: ["**/node_modules", "dist", "build", ".cache", "*.log", ".env*", "!.env.example", ".dagger", "generated"],
       defaultPath: ".",
     })
     source: Directory,
@@ -217,7 +217,7 @@ export class Webring {
   @func()
   async ciWithRelease(
     @argument({
-      ignore: ["node_modules", "dist", "build", ".cache", "*.log", ".env*", "!.env.example", ".dagger", "generated"],
+      ignore: ["**/node_modules", "dist", "build", ".cache", "*.log", ".env*", "!.env.example", ".dagger", "generated"],
       defaultPath: ".",
     })
     source: Directory,
