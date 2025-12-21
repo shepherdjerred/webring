@@ -9,3 +9,4 @@ node_modules
 .dagger/dist/
 .dagger/*.log
 .dagger/.cache/
+.claude/settings.local.json
