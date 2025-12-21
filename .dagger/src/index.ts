@@ -18,7 +18,7 @@ export class Webring {
   ): Container {
     logWithTimestamp("📦 Installing dependencies");
 
-    const container = getBunContainerWithCache(source).withExec(["bun", "install", "--frozen-lockfile"]);
+    const container = getBunContainerWithCache(source, "latest").withExec(["bun", "install", "--frozen-lockfile"]);
 
     return container;
   }
@@ -97,7 +97,7 @@ export class Webring {
       const testResult = await depsContainer.withExec(["bun", "run", "test", "--", "--run"]).stdout();
 
       // Test example app - setup parent context with built dist
-      const exampleContainer = getBunContainerWithCache(source)
+      const exampleContainer = getBunContainerWithCache(source, "latest")
         .withDirectory("dist", buildDir)
         .withExec(["bun", "install", "--frozen-lockfile"]);
 
