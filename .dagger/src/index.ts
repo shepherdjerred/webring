@@ -1,4 +1,4 @@
-import { func, argument, Directory, object, Container } from "@dagger.io/dagger";
+import { func, argument, Directory, object, Container, dag, Secret } from "@dagger.io/dagger";
 import { logWithTimestamp, withTiming, getBunContainerWithCache } from "@shepherdjerred/dagger-utils";
 
 @object()
@@ -139,5 +139,88 @@ export class Webring {
 
     logWithTimestamp("🎉 CI pipeline completed successfully");
     return `CI pipeline completed successfully:\n- Lint: ${lintResult}\n- Build: completed\n- Test: ${testResult}`;
+  }
+
+  /**
+   * Build TypeDoc documentation
+   * @param source The source directory
+   * @returns A directory containing the TypeDoc documentation
+   */
+  @func()
+  async buildDocs(
+    @argument({
+      ignore: ["node_modules", "dist", "build", ".cache", "*.log", ".env*", "!.env.example", ".dagger", "generated"],
+      defaultPath: ".",
+    })
+    source: Directory,
+  ): Promise<Directory> {
+    logWithTimestamp("📚 Building TypeDoc documentation");
+
+    const depsContainer = this.deps(source);
+
+    const docsDir = await withTiming("typedoc", () => {
+      return depsContainer.withExec(["bun", "run", "typedoc"]).directory("docs");
+    });
+
+    logWithTimestamp("✅ TypeDoc documentation built successfully");
+    return docsDir;
+  }
+
+  /**
+   * Build a container with the TypeDoc documentation
+   * @param source The source directory
+   * @returns A container with nginx serving the documentation
+   */
+  @func()
+  async buildDocsContainer(
+    @argument({
+      ignore: ["node_modules", "dist", "build", ".cache", "*.log", ".env*", "!.env.example", ".dagger", "generated"],
+      defaultPath: ".",
+    })
+    source: Directory,
+  ): Promise<Container> {
+    logWithTimestamp("🐳 Building docs container");
+
+    const docsDir = await this.buildDocs(source);
+
+    const container = dag
+      .container()
+      .from("nginx:alpine")
+      .withDirectory("/usr/share/nginx/html", docsDir)
+      .withExposedPort(80);
+
+    logWithTimestamp("✅ Docs container built successfully");
+    return container;
+  }
+
+  /**
+   * Publish the docs container to GHCR
+   * @param source The source directory
+   * @param imageName The full image name (e.g., ghcr.io/shepherdjerred/webring-docs:latest)
+   * @param ghcrUsername The GHCR username
+   * @param ghcrPassword The GHCR password/token
+   * @returns The published image reference
+   */
+  @func()
+  async publishDocs(
+    @argument({
+      ignore: ["node_modules", "dist", "build", ".cache", "*.log", ".env*", "!.env.example", ".dagger", "generated"],
+      defaultPath: ".",
+    })
+    source: Directory,
+    @argument() imageName: string,
+    @argument() ghcrUsername: string,
+    ghcrPassword: Secret,
+  ): Promise<string> {
+    logWithTimestamp(`📦 Publishing docs container to ${imageName}`);
+
+    const container = await this.buildDocsContainer(source);
+
+    const publishedRef = await withTiming("publish to GHCR", async () => {
+      return container.withRegistryAuth("ghcr.io", ghcrUsername, ghcrPassword).publish(imageName);
+    });
+
+    logWithTimestamp(`✅ Docs container published: ${publishedRef}`);
+    return publishedRef;
   }
 }
