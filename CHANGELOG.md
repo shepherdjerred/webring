@@ -5,6 +5,45 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.0](https://github.com/shepherdjerred/webring/compare/v1.3.8...v1.4.0) (2025-12-21)
+
+
+### Features
+
+* add Docker Hub authentication to CI workflow ([d6801a7](https://github.com/shepherdjerred/webring/commit/d6801a7a8eb83a99ccee1148efba7d39637dcd59))
+* migrate to dagger ([b710a50](https://github.com/shepherdjerred/webring/commit/b710a508316a4ed4f0eb78a53a7b78fdc39fbe27))
+
+
+### Bug Fixes
+
+* add [@dagger](https://github.com/dagger).io/dagger as file link to ./sdk for runtime resolution ([1262b32](https://github.com/shepherdjerred/webring/commit/1262b32c71d2ad0af69420e8aa523729ec78100b))
+* add missing [@dagger](https://github.com/dagger).io/dagger dependency and remove yarn ([4e2b8f5](https://github.com/shepherdjerred/webring/commit/4e2b8f5e4524e1c381e1bc87b8c57d86dde9b21f))
+* add npm overrides to ensure [@dagger](https://github.com/dagger).io/dagger resolution ([9afb7c0](https://github.com/shepherdjerred/webring/commit/9afb7c0a3bbb22b7eb4010462f35cac320b09125))
+* add package.json to sdk directory for module resolution ([7ce7dfc](https://github.com/shepherdjerred/webring/commit/7ce7dfca979fb9571a9abad23b27d11bccd73562))
+* add postinstall script to create index.js shim for [@dagger](https://github.com/dagger).io/dagger ([44ce92b](https://github.com/shepherdjerred/webring/commit/44ce92b757edf51bf293556a5f46ad101e03a777))
+* configure vitest deps resolution for Bun compatibility ([3b11f29](https://github.com/shepherdjerred/webring/commit/3b11f298b41f16b51d83c270a53b6c8737b53c40))
+* configure vitest to use forks pool for Bun compatibility ([d61553b](https://github.com/shepherdjerred/webring/commit/d61553b1eb535ad9f0bc8adbf8d79ef323f6a5b9))
+* **deps:** update npm ([062f2e2](https://github.com/shepherdjerred/webring/commit/062f2e221fcef299a16975753965703ae6143b39))
+* install [@dagger](https://github.com/dagger).io/dagger from npm instead of local sdk ([7cea8e9](https://github.com/shepherdjerred/webring/commit/7cea8e9c4b22f6fc6f84639c9fe8f861467a800c))
+* regenerate dagger module with dagger develop ([772beb5](https://github.com/shepherdjerred/webring/commit/772beb59b9ed8910dc285e68c259d861676100e3))
+* remove tsconfig paths to use npm [@dagger](https://github.com/dagger).io/dagger ([daa8417](https://github.com/shepherdjerred/webring/commit/daa84175797cdd40dc639308384d9fe1db257cdd))
+* specify npm as package manager for Dagger runtime ([45b7ca5](https://github.com/shepherdjerred/webring/commit/45b7ca5dd65dc78721c2a0d09689b4cc4b378730))
+* update CI workflow to use Bun instead of Node/npm ([b570030](https://github.com/shepherdjerred/webring/commit/b570030e180aa37b2c57d0ffb66ecb3bd5c937df))
+* update dagger engine version to v0.19.8 ([02d2cc5](https://github.com/shepherdjerred/webring/commit/02d2cc57d229c668d1f64e637b090385b680d023))
+* update snapshots ([faee9ab](https://github.com/shepherdjerred/webring/commit/faee9abb585c490312c9c6f0235083ddbaed126b))
+* use --legacy-peer-deps for npm ci in dagger module ([8c182a3](https://github.com/shepherdjerred/webring/commit/8c182a3c8a25ec29fd08ee7fe24b9cfa1540a856))
+* use Bun runtime for Dagger module to fix ESM resolution ([8debdae](https://github.com/shepherdjerred/webring/commit/8debdae9d9011bd0a8d83d48bfdd18c89a9deadc))
+* use explicit version in npm overrides ([05b41da](https://github.com/shepherdjerred/webring/commit/05b41da8cf4b79d8588c4731a890cae819be4cc6))
+* use forks pool with inline deps for vitest/Bun compat ([5f5ef3b](https://github.com/shepherdjerred/webring/commit/5f5ef3b3ce44c4c480ea84788f1e83579e0cbed5))
+* use latest Bun version in Dagger container ([bb7a8d9](https://github.com/shepherdjerred/webring/commit/bb7a8d91f7bd0006c9d224aabbb67bb5d62b83c9))
+* use threads pool with inline deps for vitest/Bun compat ([6bb3bd9](https://github.com/shepherdjerred/webring/commit/6bb3bd9dba1f755becdc2abaa2cb44d5912f497f))
+* use vmThreads pool and inline zod for vitest ([0928c75](https://github.com/shepherdjerred/webring/commit/0928c75e8b67759cd47165a578694335e64a77ba))
+
+
+### Reverts
+
+* remove Docker Hub authentication from CI workflow ([dca8829](https://github.com/shepherdjerred/webring/commit/dca8829c2e654525d5ab757e6501398ee5e2b12d))
+
 ## [1.3.8](https://github.com/shepherdjerred/webring/compare/v1.3.7...v1.3.8) (2025-06-15)
 
 
