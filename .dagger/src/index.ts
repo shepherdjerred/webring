@@ -1,5 +1,11 @@
-import { func, argument, Directory, object, Container } from "@dagger.io/dagger";
-import { logWithTimestamp, withTiming, getBunContainerWithCache } from "@shepherdjerred/dagger-utils";
+import { func, argument, Directory, object, Container, Secret, dag } from "@dagger.io/dagger";
+import {
+  logWithTimestamp,
+  withTiming,
+  getBunContainerWithCache,
+  releasePr as sharedReleasePr,
+  githubRelease as sharedGithubRelease,
+} from "@shepherdjerred/dagger-utils";
 
 @object()
 export class Webring {
@@ -139,5 +145,135 @@ export class Webring {
 
     logWithTimestamp("🎉 CI pipeline completed successfully");
     return `CI pipeline completed successfully:\n- Lint: ${lintResult}\n- Build: completed\n- Test: ${testResult}`;
+  }
+
+  /**
+   * Generate typedoc documentation
+   * @param source The source directory
+   * @returns A directory containing the generated docs
+   */
+  @func()
+  async typedoc(
+    @argument({
+      ignore: ["node_modules", "dist", "build", ".cache", "*.log", ".env*", "!.env.example", ".dagger", "generated"],
+      defaultPath: ".",
+    })
+    source: Directory,
+  ): Promise<Directory> {
+    logWithTimestamp("📚 Generating typedoc documentation");
+
+    const depsContainer = this.deps(source);
+
+    const docsDir = await withTiming("typedoc", () => {
+      return depsContainer.withExec(["bun", "run", "typedoc"]).directory("docs");
+    });
+
+    logWithTimestamp("✅ Typedoc generation completed successfully");
+    return docsDir;
+  }
+
+  /**
+   * Publish package to npm
+   * @param source The source directory
+   * @param npmToken NPM token for publishing
+   * @returns A message indicating completion
+   */
+  @func()
+  async publish(
+    @argument({
+      ignore: ["node_modules", "dist", "build", ".cache", "*.log", ".env*", "!.env.example", ".dagger", "generated"],
+      defaultPath: ".",
+    })
+    source: Directory,
+    @argument()
+    npmToken: Secret,
+  ): Promise<string> {
+    logWithTimestamp("📦 Publishing to npm");
+
+    const depsContainer = this.deps(source);
+
+    const result = await withTiming("publish", async () => {
+      return depsContainer
+        .withExec(["bun", "run", "build"])
+        .withSecretVariable("NPM_TOKEN", npmToken)
+        .withExec(["sh", "-c", 'echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc && npm publish'])
+        .stdout();
+    });
+
+    logWithTimestamp("✅ Published to npm successfully");
+    return result;
+  }
+
+  /**
+   * Run CI and handle release logic (for main branch pushes).
+   * Combines ci, release-please, publish, and typedoc into a single entry point.
+   * Returns a directory with docs for GitHub Pages deployment.
+   * @param source The source directory
+   * @param env The environment (dev or prod)
+   * @param repoUrl The repository URL (e.g., "shepherdjerred/webring")
+   * @param githubToken GitHub token for release-please
+   * @param npmToken NPM token for publishing (only needed for prod)
+   */
+  @func()
+  async ciWithRelease(
+    @argument({
+      ignore: ["node_modules", "dist", "build", ".cache", "*.log", ".env*", "!.env.example", ".dagger", "generated"],
+      defaultPath: ".",
+    })
+    source: Directory,
+    env = "dev",
+    repoUrl?: string,
+    githubToken?: Secret,
+    npmToken?: Secret,
+  ): Promise<Directory> {
+    const isProd = env === "prod";
+
+    return withTiming("ci-with-release", async () => {
+      // Always run CI first
+      await this.ci(source);
+
+      // Create artifacts directory
+      let artifactsDir = dag.directory();
+
+      if (isProd) {
+        // For prod, also handle release-please flow
+        if (!repoUrl || !githubToken) {
+          throw new Error("repoUrl and githubToken are required for prod environment");
+        }
+
+        // Create/update release PR
+        const releasePrResult = await withTiming("release-pr", async () => {
+          return sharedReleasePr({
+            ghToken: githubToken,
+            repoUrl,
+            releaseType: "node",
+          });
+        });
+        logWithTimestamp(`Release PR: ${releasePrResult}`);
+
+        // Try to create GitHub release (only succeeds if release PR was just merged)
+        const githubReleaseResult = await withTiming("github-release", async () => {
+          return sharedGithubRelease({
+            ghToken: githubToken,
+            repoUrl,
+            releaseType: "node",
+          });
+        });
+        logWithTimestamp(`GitHub Release: ${githubReleaseResult}`);
+
+        // If a release was created and we have an npm token, publish
+        const releaseCreated = githubReleaseResult.includes("github.com") && githubReleaseResult.includes("releases");
+        if (releaseCreated && npmToken) {
+          await this.publish(source, npmToken);
+        }
+
+        // Generate typedoc for GitHub Pages
+        const docsDir = await this.typedoc(source);
+        artifactsDir = artifactsDir.withDirectory("docs", docsDir);
+      }
+
+      logWithTimestamp("🎉 CI with release completed successfully");
+      return artifactsDir;
+    });
   }
 }
