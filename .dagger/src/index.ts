@@ -116,11 +116,11 @@ export class Webring {
         .withDirectory("dist", buildDir)
         .withExec(["bun", "install", "--frozen-lockfile"])
         .withWorkdir("/workspace/example")
-        // Remove webring from package.json before installing to prevent symlink creation
+        // Remove webring line from package.json before installing to prevent symlink creation
         .withExec([
           "sh",
           "-c",
-          "cat package.json | sed 's/\"webring\": \"\\.\\.\\/\"/\"__webring_placeholder__\": \"0.0.0\"/' > package.json.tmp && mv package.json.tmp package.json",
+          "sed '/\"webring\":/d' package.json > package.json.tmp && mv package.json.tmp package.json",
         ])
         // Now install deps - this won't create the problematic symlink
         .withExec(["bun", "install"])
