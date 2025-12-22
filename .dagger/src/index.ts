@@ -126,8 +126,9 @@ export class Webring {
         // Now install deps - this won't create the problematic symlink
         .withExec(["bun", "install"])
         // Manually add the built dist as webring package
-        .withExec(["mkdir", "-p", "node_modules/webring"])
-        .withExec(["cp", "-r", "../dist/.", "node_modules/webring/"])
+        // The package.json expects main: "dist/index.js" so we need to preserve that structure
+        .withExec(["mkdir", "-p", "node_modules/webring/dist"])
+        .withExec(["cp", "-r", "../dist/.", "node_modules/webring/dist/"])
         .withExec(["cp", "../package.json", "node_modules/webring/"]);
 
       await exampleContainer.withExec(["bun", "run", "build"]).stdout();
