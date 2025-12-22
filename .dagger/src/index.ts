@@ -107,14 +107,24 @@ export class Webring {
       // to the parent directory. Running "bun install" creates example/node_modules/webring -> ../
       // which recursively includes example/ itself, corrupting the Dagger cache.
       // Instead, we manually set up the node_modules with the built dist.
+      //
+      // IMPORTANT: We must NOT run "bun install" in the example directory at all,
+      // because even with --ignore-scripts, bun still creates the symlink before
+      // we can remove it, and Dagger snapshots this corrupted state.
+      // Instead, we modify package.json to remove webring before installing.
       const exampleContainer = getBunContainerWithCache(source, "latest")
         .withDirectory("dist", buildDir)
         .withExec(["bun", "install", "--frozen-lockfile"])
         .withWorkdir("/workspace/example")
-        // Install example deps but skip the webring link
-        .withExec(["sh", "-c", "mkdir -p node_modules && bun install --ignore-scripts || true"])
-        // Manually link the built dist as webring package
-        .withExec(["rm", "-rf", "node_modules/webring"])
+        // Remove webring from package.json before installing to prevent symlink creation
+        .withExec([
+          "sh",
+          "-c",
+          "cat package.json | sed 's/\"webring\": \"\\.\\.\\/\"/\"__webring_placeholder__\": \"0.0.0\"/' > package.json.tmp && mv package.json.tmp package.json",
+        ])
+        // Now install deps - this won't create the problematic symlink
+        .withExec(["bun", "install"])
+        // Manually add the built dist as webring package
         .withExec(["mkdir", "-p", "node_modules/webring"])
         .withExec(["cp", "-r", "../dist/.", "node_modules/webring/"])
         .withExec(["cp", "../package.json", "node_modules/webring/"]);
