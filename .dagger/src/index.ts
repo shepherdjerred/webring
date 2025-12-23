@@ -1,5 +1,11 @@
 import { func, argument, Directory, object, Container, dag, Secret } from "@dagger.io/dagger";
-import { logWithTimestamp, withTiming, getBunContainerWithCache } from "@shepherdjerred/dagger-utils";
+import {
+  logWithTimestamp,
+  withTiming,
+  getBunContainerWithCache,
+  releasePr as sharedReleasePr,
+  githubRelease as sharedGithubRelease,
+} from "@shepherdjerred/dagger-utils";
 
 @object()
 export class Webring {
@@ -11,7 +17,7 @@ export class Webring {
   @func()
   deps(
     @argument({
-      ignore: ["node_modules", "dist", "build", ".cache", "*.log", ".env*", "!.env.example", ".dagger", "generated"],
+      ignore: ["**/node_modules", "dist", "build", ".cache", "*.log", ".env*", "!.env.example", ".dagger", "generated"],
       defaultPath: ".",
     })
     source: Directory,
@@ -31,7 +37,7 @@ export class Webring {
   @func()
   async lint(
     @argument({
-      ignore: ["node_modules", "dist", "build", ".cache", "*.log", ".env*", "!.env.example", ".dagger", "generated"],
+      ignore: ["**/node_modules", "dist", "build", ".cache", "*.log", ".env*", "!.env.example", ".dagger", "generated"],
       defaultPath: ".",
     })
     source: Directory,
@@ -56,7 +62,7 @@ export class Webring {
   @func()
   async build(
     @argument({
-      ignore: ["node_modules", "dist", "build", ".cache", "*.log", ".env*", "!.env.example", ".dagger", "generated"],
+      ignore: ["**/node_modules", "dist", "build", ".cache", "*.log", ".env*", "!.env.example", ".dagger", "generated"],
       defaultPath: ".",
     })
     source: Directory,
@@ -81,7 +87,7 @@ export class Webring {
   @func()
   async test(
     @argument({
-      ignore: ["node_modules", "dist", "build", ".cache", "*.log", ".env*", "!.env.example", ".dagger", "generated"],
+      ignore: ["**/node_modules", "dist", "build", ".cache", "*.log", ".env*", "!.env.example", ".dagger", "generated"],
       defaultPath: ".",
     })
     source: Directory,
@@ -96,16 +102,36 @@ export class Webring {
       // Run unit tests
       const testResult = await depsContainer.withExec(["bun", "run", "test", "--", "--run"]).stdout();
 
-      // Test example app - setup parent context with built dist
+      // Test example app - manually link dist to avoid recursive symlinks
+      // The example's package.json has "webring": "../" which creates a symlink
+      // to the parent directory. Running "bun install" creates example/node_modules/webring -> ../
+      // which recursively includes example/ itself, corrupting the Dagger cache.
+      // Instead, we manually set up the node_modules with the built dist.
+      //
+      // IMPORTANT: We must NOT run "bun install" in the example directory at all,
+      // because even with --ignore-scripts, bun still creates the symlink before
+      // we can remove it, and Dagger snapshots this corrupted state.
+      // Instead, we modify package.json to remove webring before installing.
       const exampleContainer = getBunContainerWithCache(source, "latest")
         .withDirectory("dist", buildDir)
-        .withExec(["bun", "install", "--frozen-lockfile"]);
-
-      await exampleContainer
-        .withWorkdir("/workspace/example")
         .withExec(["bun", "install", "--frozen-lockfile"])
-        .withExec(["bun", "run", "build"])
-        .stdout();
+        .withWorkdir("/workspace/example")
+        // Remove webring dependency from package.json before installing to prevent symlink creation
+        // Using bun to properly modify JSON without leaving trailing commas
+        .withExec([
+          "bun",
+          "-e",
+          "const pkg = JSON.parse(await Bun.file('package.json').text()); delete pkg.dependencies.webring; await Bun.write('package.json', JSON.stringify(pkg, null, 2));",
+        ])
+        // Now install deps - this won't create the problematic symlink
+        .withExec(["bun", "install"])
+        // Manually add the built dist as webring package
+        // The package.json expects main: "dist/index.js" so we need to preserve that structure
+        .withExec(["mkdir", "-p", "node_modules/webring/dist"])
+        .withExec(["cp", "-r", "../dist/.", "node_modules/webring/dist/"])
+        .withExec(["cp", "../package.json", "node_modules/webring/"]);
+
+      await exampleContainer.withExec(["bun", "run", "build"]).stdout();
 
       return testResult;
     });
@@ -122,7 +148,7 @@ export class Webring {
   @func()
   async ci(
     @argument({
-      ignore: ["node_modules", "dist", "build", ".cache", "*.log", ".env*", "!.env.example", ".dagger", "generated"],
+      ignore: ["**/node_modules", "dist", "build", ".cache", "*.log", ".env*", "!.env.example", ".dagger", "generated"],
       defaultPath: ".",
     })
     source: Directory,
@@ -222,5 +248,136 @@ export class Webring {
 
     logWithTimestamp(`✅ Docs container published: ${publishedRef}`);
     return publishedRef;
+  }
+
+  /**
+   * Generate typedoc documentation
+   * @param source The source directory
+   * @returns A directory containing the generated docs
+   */
+  @func()
+  async typedoc(
+    @argument({
+      ignore: ["**/node_modules", "dist", "build", ".cache", "*.log", ".env*", "!.env.example", ".dagger", "generated"],
+      defaultPath: ".",
+    })
+    source: Directory,
+  ): Promise<Directory> {
+    logWithTimestamp("📚 Generating typedoc documentation");
+
+    const depsContainer = this.deps(source);
+
+    const docsDir = await withTiming("typedoc", () => {
+      return depsContainer.withExec(["bun", "run", "typedoc"]).directory("docs");
+    });
+
+    logWithTimestamp("✅ Typedoc generation completed successfully");
+    return docsDir;
+  }
+
+  /**
+   * Publish package to npm
+   * @param source The source directory
+   * @param npmToken NPM token for publishing
+   * @returns A message indicating completion
+   */
+  @func()
+  async publish(
+    @argument({
+      ignore: ["**/node_modules", "dist", "build", ".cache", "*.log", ".env*", "!.env.example", ".dagger", "generated"],
+      defaultPath: ".",
+    })
+    source: Directory,
+    @argument()
+    npmToken: Secret,
+  ): Promise<string> {
+    logWithTimestamp("📦 Publishing to npm");
+
+    const depsContainer = this.deps(source);
+
+    const result = await withTiming("publish", async () => {
+      return depsContainer
+        .withExec(["bun", "run", "build"])
+        .withSecretVariable("NPM_TOKEN", npmToken)
+        .withExec(["sh", "-c", 'echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc && npm publish'])
+        .stdout();
+    });
+
+    logWithTimestamp("✅ Published to npm successfully");
+    return result;
+  }
+
+  /**
+   * Run CI and handle release logic (for main branch pushes).
+   * Combines ci, release-please, publish, and typedoc into a single entry point.
+   * Returns a directory with docs for GitHub Pages deployment.
+   * @param source The source directory
+   * @param env The environment (dev or prod)
+   * @param repoUrl The repository URL (e.g., "shepherdjerred/webring")
+   * @param githubToken GitHub token for release-please
+   * @param npmToken NPM token for publishing (only needed for prod)
+   */
+  @func()
+  async ciWithRelease(
+    @argument({
+      ignore: ["**/node_modules", "dist", "build", ".cache", "*.log", ".env*", "!.env.example", ".dagger", "generated"],
+      defaultPath: ".",
+    })
+    source: Directory,
+    env = "dev",
+    repoUrl?: string,
+    githubToken?: Secret,
+    npmToken?: Secret,
+  ): Promise<Directory> {
+    const isProd = env === "prod";
+
+    return withTiming("ci-with-release", async () => {
+      // Always run CI first
+      await this.ci(source);
+
+      // Create artifacts directory
+      let artifactsDir = dag.directory();
+
+      if (isProd) {
+        // For prod, also handle release-please flow
+        if (!repoUrl || !githubToken) {
+          throw new Error("repoUrl and githubToken are required for prod environment");
+        }
+
+        // Create/update release PR
+        const releasePrResult = await withTiming("release-pr", async () => {
+          return sharedReleasePr({
+            ghToken: githubToken,
+            repoUrl,
+            releaseType: "node",
+          });
+        });
+        logWithTimestamp(`Release PR: ${releasePrResult}`);
+
+        // Try to create GitHub release (only succeeds if release PR was just merged)
+        const githubReleaseResult = await withTiming("github-release", async () => {
+          return sharedGithubRelease({
+            ghToken: githubToken,
+            repoUrl,
+            releaseType: "node",
+          });
+        });
+        logWithTimestamp(`GitHub Release: ${githubReleaseResult}`);
+
+        // If a release was created and we have an npm token, publish
+        const releaseCreated = githubReleaseResult.includes("github.com") && githubReleaseResult.includes("releases");
+        if (releaseCreated && npmToken) {
+          await this.publish(source, npmToken);
+        }
+
+        // Generate typedoc for GitHub Pages
+        const docsDir = await this.typedoc(source);
+        artifactsDir = artifactsDir.withDirectory("docs", docsDir);
+      }
+
+      logWithTimestamp("🎉 CI with release completed successfully");
+      return artifactsDir;
+    });
+
   }
 }
