@@ -92,6 +92,7 @@ jobs:
       - name: Run Dagger CI with release
         env:
           GITHUB_TOKEN: ${{ env.GH_TOKEN }}
+          GH_TOKEN: ${{ env.GH_TOKEN }}
         run: |
           ARGS=(
             --source=.
@@ -103,6 +104,9 @@ jobs:
               --repo-url="shepherdjerred/webring"
               --github-token=env:GITHUB_TOKEN
               --npm-token=env:NPM_TOKEN
+              --version="${{ github.sha }}"
+              --ghcr-username="shepherdjerred"
+              --ghcr-password=env:GH_TOKEN
             )
           fi
 
