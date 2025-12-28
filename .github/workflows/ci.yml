@@ -93,6 +93,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ env.GH_TOKEN }}
           GH_TOKEN: ${{ env.GH_TOKEN }}
+          GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           ARGS=(
             --source=.
@@ -105,8 +106,8 @@ jobs:
               --github-token=env:GITHUB_TOKEN
               --npm-token=env:NPM_TOKEN
               --version="${{ github.sha }}"
-              --ghcr-username="shepherdjerred"
-              --ghcr-password=env:GH_TOKEN
+              --ghcr-username="${{ github.actor }}"
+              --ghcr-password=env:GHCR_TOKEN
             )
           fi
 
@@ -132,3 +133,4 @@ permissions:
   pull-requests: write
   pages: write
   id-token: write
+  packages: write
