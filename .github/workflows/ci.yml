@@ -34,6 +34,8 @@ jobs:
           DAGGER_CLOUD_TOKEN: op://bic45kuflnwsnxnd67dzcnxjze/5p65mbzr237yyzt2sfnfao3a5a/DAGGER_CLOUD_TOKEN
           NPM_TOKEN: op://bic45kuflnwsnxnd67dzcnxjze/5p65mbzr237yyzt2sfnfao3a5a/NPM_TOKEN
           GH_TOKEN: op://bic45kuflnwsnxnd67dzcnxjze/5p65mbzr237yyzt2sfnfao3a5a/GH_TOKEN
+          GHCR_USERNAME: op://bic45kuflnwsnxnd67dzcnxjze/5p65mbzr237yyzt2sfnfao3a5a/GHCR_USERNAME
+          GHCR_PASSWORD: op://bic45kuflnwsnxnd67dzcnxjze/5p65mbzr237yyzt2sfnfao3a5a/GHCR_PASSWORD
 
       - name: Extract kubectl version
         id: kubectl-version
@@ -103,6 +105,9 @@ jobs:
               --repo-url="shepherdjerred/webring"
               --github-token=env:GITHUB_TOKEN
               --npm-token=env:NPM_TOKEN
+              --version="${{ github.sha }}"
+              --ghcr-username="$GHCR_USERNAME"
+              --ghcr-password=env:GHCR_PASSWORD
             )
           fi
 

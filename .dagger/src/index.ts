@@ -6,6 +6,7 @@ import {
   releasePr as sharedReleasePr,
   githubRelease as sharedGithubRelease,
 } from "@shepherdjerred/dagger-utils";
+import { updateHomelabVersion } from "@shepherdjerred/dagger-utils/containers";
 
 @object()
 export class Webring {
@@ -308,6 +309,33 @@ export class Webring {
   }
 
   /**
+   * Deploy docs to homelab by creating a PR to update the image version
+   * @param version The version/tag to deploy
+   * @param ghToken GitHub token for creating the PR
+   * @returns A message indicating completion
+   */
+  @func()
+  async deploy(@argument() version: string, ghToken?: Secret): Promise<string> {
+    logWithTimestamp(`🚀 Starting deployment for version ${version}`);
+
+    if (!ghToken) {
+      logWithTimestamp("⚠️ No GitHub token provided - deployment skipped");
+      return "Deployment skipped (no GitHub token provided)";
+    }
+
+    const result = await withTiming("deploy to homelab", async () => {
+      return updateHomelabVersion({
+        ghToken,
+        appName: "webring-docs",
+        version,
+      });
+    });
+
+    logWithTimestamp("✅ Deployment completed successfully");
+    return result;
+  }
+
+  /**
    * Run CI and handle release logic (for main branch pushes).
    * Combines ci, release-please, publish, and typedoc into a single entry point.
    * Returns a directory with docs for GitHub Pages deployment.
@@ -316,6 +344,9 @@ export class Webring {
    * @param repoUrl The repository URL (e.g., "shepherdjerred/webring")
    * @param githubToken GitHub token for release-please
    * @param npmToken NPM token for publishing (only needed for prod)
+   * @param version Version tag for the docs container (e.g., commit SHA)
+   * @param ghcrUsername GHCR username for publishing docs container
+   * @param ghcrPassword GHCR password/token for publishing docs container
    */
   @func()
   async ciWithRelease(
@@ -328,6 +359,9 @@ export class Webring {
     repoUrl?: string,
     githubToken?: Secret,
     npmToken?: Secret,
+    version?: string,
+    ghcrUsername?: string,
+    ghcrPassword?: Secret,
   ): Promise<Directory> {
     const isProd = env === "prod";
 
@@ -373,11 +407,25 @@ export class Webring {
         // Generate typedoc for GitHub Pages
         const docsDir = await this.typedoc(source);
         artifactsDir = artifactsDir.withDirectory("docs", docsDir);
+
+        // Publish docs container to GHCR and deploy to homelab
+        if (version && ghcrUsername && ghcrPassword) {
+          const imageName = `ghcr.io/shepherdjerred/webring-docs:${version}`;
+          await withTiming("publish docs container", async () => {
+            return this.publishDocs(source, imageName, ghcrUsername, ghcrPassword);
+          });
+
+          // Deploy to homelab (creates PR to update version)
+          await withTiming("deploy to homelab", async () => {
+            return this.deploy(version, githubToken);
+          });
+        } else {
+          logWithTimestamp("⏭️ Skipping docs container publish/deploy (missing version or GHCR credentials)");
+        }
       }
 
       logWithTimestamp("🎉 CI with release completed successfully");
       return artifactsDir;
     });
-
   }
 }
