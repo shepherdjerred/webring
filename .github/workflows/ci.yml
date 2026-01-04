@@ -6,8 +6,8 @@ on:
   pull_request:
 
 concurrency:
-  group: "pages"
-  cancel-in-progress: false
+  group: ${{ github.event_name == 'push' && 'pages' || format('pr-{0}', github.event.pull_request.number) }}
+  cancel-in-progress: ${{ github.event_name != 'push' }}
 
 jobs:
   dagger-ci:
