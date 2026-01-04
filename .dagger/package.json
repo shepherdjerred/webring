@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@dagger.io/dagger": "^0.19.8",
-    "@shepherdjerred/dagger-utils": "^0.4.0",
+    "@shepherdjerred/dagger-utils": "^0.5.0",
     "typescript": "^5.8.2"
   },
   "devDependencies": {
