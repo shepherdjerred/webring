@@ -109,9 +109,10 @@ jobs:
               --ghcr-username="${{ github.actor }}"
               --ghcr-password=env:GHCR_TOKEN
             )
+            dagger call ci-with-release "${ARGS[@]}" export --path=./artifacts
+          else
+            dagger call ci-with-release "${ARGS[@]}"
           fi
-
-          dagger call ci-with-release "${ARGS[@]}" export --path=./artifacts
 
       - name: Setup Pages
         if: steps.env.outputs.env == 'prod'
