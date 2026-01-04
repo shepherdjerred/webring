@@ -300,7 +300,11 @@ export class Webring {
       return depsContainer
         .withExec(["bun", "run", "build"])
         .withSecretVariable("NPM_TOKEN", npmToken)
-        .withExec(["sh", "-c", 'echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc && bun publish'])
+        .withExec([
+          "sh",
+          "-c",
+          'echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc && bun publish --ignore-scripts',
+        ])
         .stdout();
     });
 
