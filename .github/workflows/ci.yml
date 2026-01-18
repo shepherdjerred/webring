@@ -6,15 +6,12 @@ on:
   pull_request:
 
 concurrency:
-  group: ${{ github.event_name == 'push' && 'pages' || format('pr-{0}', github.event.pull_request.number) }}
+  group: ${{ github.event_name == 'push' && 'main' || format('pr-{0}', github.event.pull_request.number) }}
   cancel-in-progress: ${{ github.event_name != 'push' }}
 
 jobs:
   dagger-ci:
     runs-on: [webring-runner-set]
-    environment:
-      name: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && 'github-pages' || '' }}
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
@@ -34,6 +31,8 @@ jobs:
           DAGGER_CLOUD_TOKEN: op://bic45kuflnwsnxnd67dzcnxjze/5p65mbzr237yyzt2sfnfao3a5a/DAGGER_CLOUD_TOKEN
           NPM_TOKEN: op://bic45kuflnwsnxnd67dzcnxjze/5p65mbzr237yyzt2sfnfao3a5a/NPM_TOKEN
           GH_TOKEN: op://bic45kuflnwsnxnd67dzcnxjze/5p65mbzr237yyzt2sfnfao3a5a/GH_TOKEN
+          S3_ACCESS_KEY_ID: op://bic45kuflnwsnxnd67dzcnxjze/5p65mbzr237yyzt2sfnfao3a5a/S3_ACCESS_KEY_ID
+          S3_SECRET_ACCESS_KEY: op://bic45kuflnwsnxnd67dzcnxjze/5p65mbzr237yyzt2sfnfao3a5a/S3_SECRET_ACCESS_KEY
 
       - name: Extract kubectl version
         id: kubectl-version
@@ -93,7 +92,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ env.GH_TOKEN }}
           GH_TOKEN: ${{ env.GH_TOKEN }}
-          GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           ARGS=(
             --source=.
@@ -105,33 +103,13 @@ jobs:
               --repo-url="shepherdjerred/webring"
               --github-token=env:GITHUB_TOKEN
               --npm-token=env:NPM_TOKEN
-              --version="${{ github.sha }}"
-              --ghcr-username="${{ github.actor }}"
-              --ghcr-password=env:GHCR_TOKEN
+              --s3-access-key-id=env:S3_ACCESS_KEY_ID
+              --s3-secret-access-key=env:S3_SECRET_ACCESS_KEY
             )
-            dagger call ci-with-release "${ARGS[@]}" export --path=./artifacts
-          else
-            dagger call ci-with-release "${ARGS[@]}"
           fi
 
-      - name: Setup Pages
-        if: steps.env.outputs.env == 'prod'
-        uses: actions/configure-pages@v5
-
-      - name: Upload artifact
-        if: steps.env.outputs.env == 'prod'
-        uses: actions/upload-pages-artifact@v4
-        with:
-          path: "./artifacts/docs"
-
-      - name: Deploy to GitHub Pages
-        if: steps.env.outputs.env == 'prod'
-        id: deployment
-        uses: actions/deploy-pages@v4
+          dagger call ci-with-release "${ARGS[@]}"
 
 permissions:
   contents: write
   pull-requests: write
-  pages: write
-  id-token: write
-  packages: write

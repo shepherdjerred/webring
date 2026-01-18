@@ -6,7 +6,7 @@ import {
   releasePr as sharedReleasePr,
   githubRelease as sharedGithubRelease,
 } from "@shepherdjerred/dagger-utils";
-import { updateHomelabVersion } from "@shepherdjerred/dagger-utils/containers";
+import { syncToS3 } from "@shepherdjerred/dagger-utils/containers";
 
 @object()
 export class Webring {
@@ -194,61 +194,38 @@ export class Webring {
   }
 
   /**
-   * Build a container with the TypeDoc documentation
+   * Deploy docs to S3 (SeaweedFS)
    * @param source The source directory
-   * @returns A container with nginx serving the documentation
+   * @param s3AccessKeyId S3 access key ID
+   * @param s3SecretAccessKey S3 secret access key
+   * @returns The sync output
    */
   @func()
-  async buildDocsContainer(
+  async deployDocsToS3(
     @argument({
       ignore: ["node_modules", "dist", "build", ".cache", "*.log", ".env*", "!.env.example", ".dagger", "generated"],
       defaultPath: ".",
     })
     source: Directory,
-  ): Promise<Container> {
-    logWithTimestamp("🐳 Building docs container");
+    @argument() s3AccessKeyId: Secret,
+    @argument() s3SecretAccessKey: Secret,
+  ): Promise<string> {
+    logWithTimestamp("🚀 Deploying docs to S3");
 
     const docsDir = await this.buildDocs(source);
 
-    const container = dag
-      .container()
-      .from("nginx:alpine")
-      .withDirectory("/usr/share/nginx/html", docsDir)
-      .withExposedPort(80);
-
-    logWithTimestamp("✅ Docs container built successfully");
-    return container;
-  }
-
-  /**
-   * Publish the docs container to GHCR
-   * @param source The source directory
-   * @param imageName The full image name (e.g., ghcr.io/shepherdjerred/webring-docs:latest)
-   * @param ghcrUsername The GHCR username
-   * @param ghcrPassword The GHCR password/token
-   * @returns The published image reference
-   */
-  @func()
-  async publishDocs(
-    @argument({
-      ignore: ["node_modules", "dist", "build", ".cache", "*.log", ".env*", "!.env.example", ".dagger", "generated"],
-      defaultPath: ".",
-    })
-    source: Directory,
-    @argument() imageName: string,
-    @argument() ghcrUsername: string,
-    ghcrPassword: Secret,
-  ): Promise<string> {
-    logWithTimestamp(`📦 Publishing docs container to ${imageName}`);
-
-    const container = await this.buildDocsContainer(source);
-
-    const publishedRef = await withTiming("publish to GHCR", async () => {
-      return container.withRegistryAuth("ghcr.io", ghcrUsername, ghcrPassword).publish(imageName);
+    const syncOutput = await syncToS3({
+      sourceDir: docsDir,
+      bucketName: "webring",
+      endpointUrl: "http://seaweedfs-s3.seaweedfs.svc.cluster.local:8333",
+      accessKeyId: s3AccessKeyId,
+      secretAccessKey: s3SecretAccessKey,
+      region: "us-east-1",
+      deleteRemoved: true,
     });
 
-    logWithTimestamp(`✅ Docs container published: ${publishedRef}`);
-    return publishedRef;
+    logWithTimestamp("✅ Docs deployed to S3 successfully");
+    return syncOutput;
   }
 
   /**
@@ -313,44 +290,15 @@ export class Webring {
   }
 
   /**
-   * Deploy docs to homelab by creating a PR to update the image version
-   * @param version The version/tag to deploy
-   * @param ghToken GitHub token for creating the PR
-   * @returns A message indicating completion
-   */
-  @func()
-  async deploy(@argument() version: string, ghToken?: Secret): Promise<string> {
-    logWithTimestamp(`🚀 Starting deployment for version ${version}`);
-
-    if (!ghToken) {
-      logWithTimestamp("⚠️ No GitHub token provided - deployment skipped");
-      return "Deployment skipped (no GitHub token provided)";
-    }
-
-    const result = await withTiming("deploy to homelab", async () => {
-      return updateHomelabVersion({
-        ghToken,
-        appName: "webring-docs",
-        version,
-      });
-    });
-
-    logWithTimestamp("✅ Deployment completed successfully");
-    return result;
-  }
-
-  /**
    * Run CI and handle release logic (for main branch pushes).
-   * Combines ci, release-please, publish, and typedoc into a single entry point.
-   * Returns a directory with docs for GitHub Pages deployment.
+   * Combines ci, release-please, and publish into a single entry point.
    * @param source The source directory
    * @param env The environment (dev or prod)
    * @param repoUrl The repository URL (e.g., "shepherdjerred/webring")
    * @param githubToken GitHub token for release-please
    * @param npmToken NPM token for publishing (only needed for prod)
-   * @param version Version tag for the docs container (e.g., commit SHA)
-   * @param ghcrUsername GHCR username for publishing docs container
-   * @param ghcrPassword GHCR password/token for publishing docs container
+   * @param s3AccessKeyId S3 access key ID for docs deployment
+   * @param s3SecretAccessKey S3 secret access key for docs deployment
    */
   @func()
   async ciWithRelease(
@@ -363,18 +311,14 @@ export class Webring {
     repoUrl?: string,
     githubToken?: Secret,
     npmToken?: Secret,
-    version?: string,
-    ghcrUsername?: string,
-    ghcrPassword?: Secret,
-  ): Promise<Directory> {
+    s3AccessKeyId?: Secret,
+    s3SecretAccessKey?: Secret,
+  ): Promise<string> {
     const isProd = env === "prod";
 
     return withTiming("ci-with-release", async () => {
       // Always run CI first
       await this.ci(source);
-
-      // Create artifacts directory
-      let artifactsDir = dag.directory();
 
       if (isProd) {
         // For prod, also handle release-please flow
@@ -408,28 +352,18 @@ export class Webring {
           await this.publish(source, npmToken);
         }
 
-        // Generate typedoc for GitHub Pages
-        const docsDir = await this.typedoc(source);
-        artifactsDir = artifactsDir.withDirectory("docs", docsDir);
-
-        // Publish docs container to GHCR and deploy to homelab
-        if (version && ghcrUsername && ghcrPassword) {
-          const imageName = `ghcr.io/shepherdjerred/webring-docs:${version}`;
-          await withTiming("publish docs container", async () => {
-            return this.publishDocs(source, imageName, ghcrUsername, ghcrPassword);
-          });
-
-          // Deploy to homelab (creates PR to update version)
-          await withTiming("deploy to homelab", async () => {
-            return this.deploy(version, githubToken);
+        // Deploy docs to S3
+        if (s3AccessKeyId && s3SecretAccessKey) {
+          await withTiming("deploy docs to S3", async () => {
+            return this.deployDocsToS3(source, s3AccessKeyId, s3SecretAccessKey);
           });
         } else {
-          logWithTimestamp("⏭️ Skipping docs container publish/deploy (missing version or GHCR credentials)");
+          logWithTimestamp("⏭️ Skipping docs deployment (missing S3 credentials)");
         }
       }
 
       logWithTimestamp("🎉 CI with release completed successfully");
-      return artifactsDir;
+      return "CI with release completed successfully";
     });
   }
 }
