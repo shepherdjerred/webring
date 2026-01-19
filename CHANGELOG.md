@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.1](https://github.com/shepherdjerred/webring/compare/v1.4.0...v1.4.1) (2026-01-19)
+
+
+### Bug Fixes
+
+* allow PR CI runs to execute in parallel ([67e8744](https://github.com/shepherdjerred/webring/commit/67e8744549135c07d810fe731731fb0463bea897))
+* **deps:** update dependency @shepherdjerred/dagger-utils to ^0.5.0 ([#144](https://github.com/shepherdjerred/webring/issues/144)) ([df51479](https://github.com/shepherdjerred/webring/commit/df51479c06de3346e070af36ca5ac0db16d37111))
+* **deps:** update dependency @shepherdjerred/dagger-utils to ^0.6.0 ([0d07e82](https://github.com/shepherdjerred/webring/commit/0d07e8263786b271495a68b0c9b9adb1cf169a3a))
+* skip lifecycle scripts during npm publish in Dagger CI ([336100b](https://github.com/shepherdjerred/webring/commit/336100baaf908cbb7c8cab772932aef8a4ece33a))
+* use bun publish instead of npm publish in Dagger CI ([3a090d1](https://github.com/shepherdjerred/webring/commit/3a090d101ebfc6d778c065805a4cfe74bb0cac35))
+
 ## [1.4.0](https://github.com/shepherdjerred/webring/compare/v1.3.8...v1.4.0) (2026-01-04)
 
 
