@@ -27,6 +27,7 @@
         "lint-staged": "^16.0.0",
         "prettier": "^3.5.3",
         "typedoc": "^0.28.0",
+        "typedoc-plugin-extras": "^4.0.1",
         "typedoc-plugin-zod": "^1.4.0",
         "typescript": "^5.8.2",
         "typescript-eslint": "^8.26.1",
@@ -808,6 +809,8 @@
     "type-is": ["type-is@2.0.1", "", { "dependencies": { "content-type": "^1.0.5", "media-typer": "^1.1.0", "mime-types": "^3.0.0" } }, "sha512-OZs6gsjF4vMp32qrCbiVSkrFmXtG/AZhY3t0iAMrMBiAZyV9oALtXO8hsrHbMXF9x6L3grlFuwW2oAz7cav+Gw=="],
 
     "typedoc": ["typedoc@0.28.15", "", { "dependencies": { "@gerrit0/mini-shiki": "^3.17.0", "lunr": "^2.3.9", "markdown-it": "^14.1.0", "minimatch": "^9.0.5", "yaml": "^2.8.1" }, "peerDependencies": { "typescript": "5.0.x || 5.1.x || 5.2.x || 5.3.x || 5.4.x || 5.5.x || 5.6.x || 5.7.x || 5.8.x || 5.9.x" }, "bin": { "typedoc": "bin/typedoc" } }, "sha512-mw2/2vTL7MlT+BVo43lOsufkkd2CJO4zeOSuWQQsiXoV2VuEn7f6IZp2jsUDPmBMABpgR0R5jlcJ2OGEFYmkyg=="],
+
+    "typedoc-plugin-extras": ["typedoc-plugin-extras@4.0.1", "", { "peerDependencies": { "typedoc": "0.27.x || 0.28.x" } }, "sha512-ab3T37ukHCwBjwBJpAcWdxy/XAaLdUyy5pwbgF9WDqCRN0DTJmJPLew9Kv6qrx5qnxiyfe6F4Og+PUp15kJWLw=="],
 
     "typedoc-plugin-zod": ["typedoc-plugin-zod@1.4.3", "", { "peerDependencies": { "typedoc": "0.23.x || 0.24.x || 0.25.x || 0.26.x || 0.27.x || 0.28.x" } }, "sha512-j3kb4dGGK5OegtiIOH4F4etYdqq2lh+sTx6sABTmptPJJm8qx9XHyNlzfLYqW86ZVfL0hFR3+B/Ij9YXQw9TsA=="],
 
