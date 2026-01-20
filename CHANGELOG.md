@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.0](https://github.com/shepherdjerred/webring/compare/v1.4.1...v1.5.0) (2026-01-20)
+
+
+### Features
+
+* add Plausible analytics to TypeDoc docs ([e416ae6](https://github.com/shepherdjerred/webring/commit/e416ae678886112973910f819fe2062c027043b4))
+
+
+### Bug Fixes
+
+* use customJs instead of invalid customHead option for Plausible ([4c7b1d7](https://github.com/shepherdjerred/webring/commit/4c7b1d733d90ef8c94448fe5ece9d0141ee9ef24))
+
 ## [1.4.1](https://github.com/shepherdjerred/webring/compare/v1.4.0...v1.4.1) (2026-01-19)
 
 
