@@ -1,4 +1,4 @@
 {
   "plugin": ["typedoc-plugin-zod", "typedoc-plugin-extras"],
-  "customHead": "<script defer data-domain=\"webring.sjer.red\" src=\"https://plausible.sjer.red/js/script.js\"></script>"
+  "customJs": "plausible.js"
 }
