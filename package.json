@@ -16,7 +16,7 @@
     "url": "https://github.com/shepherdjerred/webring/issues"
   },
   "type": "module",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "scripts": {
     "prepare": "husky",
     "lint": "eslint src --cache",
