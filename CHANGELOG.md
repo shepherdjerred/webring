@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.1](https://github.com/shepherdjerred/webring/compare/v1.5.0...v1.5.1) (2026-02-08)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @shepherdjerred/dagger-utils to ^0.8.0 ([5a42e5c](https://github.com/shepherdjerred/webring/commit/5a42e5c64de5e5ef22bfbfc5c1e682898521b42e))
+
 ## [1.5.0](https://github.com/shepherdjerred/webring/compare/v1.4.1...v1.5.0) (2026-01-20)
 
 
