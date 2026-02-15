@@ -33,7 +33,7 @@
     "rss-parser": "^3.13.0",
     "sanitize-html": "^2.14.0",
     "truncate-html": "^1.2.0",
-    "zod": "^3.24.2"
+    "zod": "^4.0.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^20.0.0",
